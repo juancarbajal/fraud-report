@@ -8,7 +8,16 @@ use Laminas\Db\Adapter\Adapter;
 class FraudController extends AbstractActionController
 {
     private function getDatabase(){
-        $link = \mssql_connect('sugoServer', 'admin', 'A8WYS9q2*z');
+        //$link = \mssql_connect('sugoServer', 'admin', 'A8WYS9q2*z');
+	$serverName = "prod-sugo-apps.cjefewagaayr.us-east-1.rds.amazonaws.com";
+	$connectionOptions = array(
+	    "Database" => "db-sugo-vtext-01",
+	    "Uid" => "admin",
+	    "PWD" => "A8WYS9q2*z",
+	    "Port" => "1433"
+	);
+		    
+	$link = sqlsrv_connect($serverName,$connectionOptions);
         return $link;
 
     }
