@@ -8,13 +8,9 @@ use Laminas\Db\Adapter\Adapter;
 class FraudController extends AbstractActionController
 {
     private function getDatabase(){
-        $adapter = new Laminas\Db\Adapter\Adapter([
-            'driver'   => 'Mysqli',
-            'database' => 'laminas_db_example',
-            'username' => 'developer',
-            'password' => 'developer-password',
-        ]);
-        return $adapter;
+        $link = \mssql_connect('sugoServer', 'admin', 'A8WYS9q2*z');
+        return $link;
+
     }
     public function indexAction()
     {
@@ -23,6 +19,8 @@ class FraudController extends AbstractActionController
 
     public function creditCardAction()
     {
+        $db = $this->getDatabase();
+
         return new ViewModel();
     }
 
