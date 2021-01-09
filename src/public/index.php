@@ -5,6 +5,13 @@ declare(strict_types=1);
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
+
+if ($_SERVER['APPLICATION_ENV'] === 'development') {
+    error_reporting(E_ALL);
+    ini_set("display_errors", '1');
+}
+
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.
