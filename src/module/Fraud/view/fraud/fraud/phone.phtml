@@ -1,5 +1,5 @@
 <?= $this->partial('layout/search-form.phtml', []); ?>
-
+<?php if (isset($this->data)) {?>
 <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
@@ -10,21 +10,14 @@
                 </tr>
               </thead>
               <tbody>
+<?php foreach($this->data as $row) {?>
                 <tr>
-                  <td>1234456355</td>
-                  <td>4</td>
+                  <td><?=$row->phone?></td>
+                  <td><?=$row->cnt?></td>
                   <td><a href=''>Revisar</a></td>
                 </tr>
-                <tr>
-                  <td>1234456355</td>
-                  <td>3</td>
-                  <td><a href=''>Revisar</a></td>
-                </tr>
-                <tr>
-                  <td>1234456355</td>
-                  <td>2</td>
-                  <td><a href=''>Revisar</a></td>
-                </tr>
+<?php }?>
               </tbody>
             </table>
           </div>
+<?php } ?>

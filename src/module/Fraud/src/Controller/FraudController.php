@@ -110,11 +110,55 @@ class FraudController extends AbstractActionController
 
     public function phoneAction()
     {
-        return new ViewModel();
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        if (isset($from) && isset($to)){
+            $sql1 = "select 
+            phone
+            , count(1) as cnt
+            from 
+            (
+                select 
+                distinct(email)
+                , replace(phone, '+51', '') as phone
+                from ordenes
+                where creationdate BETWEEN '$from' and '$to'
+            ) as m 
+            group by phone
+            having count(1)>1;";
+
+            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+ 
+        }
+        else 
+            return new ViewModel();
     }
 
     public function addressAction()
-    {
-        return new ViewModel();
+    {   
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        if (isset($from) && isset($to)){
+            $sql1 = "select 
+            street_total
+            , count(1) as cnt
+            from 
+            (
+                select 
+                distinct(email)
+                , addresstype
+                , concat(city, ', ', street, ' ', number) as street_total
+                , number
+                from ordenes
+                where creationdate BETWEEN '$from' and '$to'
+            ) as m 
+            group by street_total
+            having count(1)>1;";
+
+            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+ 
+        }
+        else 
+            return new ViewModel();
     }
 }
