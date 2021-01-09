@@ -55,21 +55,10 @@ class FraudController extends AbstractActionController
             paymentsystemname , 
             cardfirstdigits , 
             lastdigits 
-            into ##tmpCreditCard
             from ordenes 
             where creationdate BETWEEN '2020-12-01' and '2020-12-30' ;
-            select 
-            paymentsystemname
-            , cardfirstdigits
-            , lastdigits
-            , count(1)
-            from 
-            ##tmpCreditCard as m 
-            group by paymentsystemname
-            , cardfirstdigits
-            , lastdigits
-            having count(1)>1;";
-            
+            ";
+
             $sql2 ="
             select 
             paymentsystemname
