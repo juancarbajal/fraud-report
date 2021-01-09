@@ -71,8 +71,9 @@ class FraudController extends AbstractActionController
             group by paymentsystemname
             , cardfirstdigits
             , lastdigits
+            having count(1)>1;
             ";
-            
+            $sql2 = "select * from ##tmpCreditCard";
             $sql3 = "drop table ##tmpCreditCard;";
 
             $db = $this->getDatabase();
