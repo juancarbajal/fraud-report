@@ -13,8 +13,7 @@ class FraudController extends AbstractActionController
         $connectionOptions = array(
             "Database" => "db-sugo-vtext-01",
             "Uid" => "admin",
-            "PWD" => "A8WYS9q2*z",
-            'CharacterSet' => 'UTF-8'
+            "PWD" => "A8WYS9q2*z"
         );
                 
         $link = sqlsrv_connect($serverName,$connectionOptions);
