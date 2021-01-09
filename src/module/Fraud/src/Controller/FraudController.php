@@ -85,6 +85,9 @@ class FraudController extends AbstractActionController
             }
 
             $result1 = sqlsrv_execute($stmt1);
+            if( sqlsrv_execute( $stmt1 ) === false ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
             print_r($result1);
 
             print($sql2);
@@ -94,6 +97,9 @@ class FraudController extends AbstractActionController
             }
 
             $result2 = sqlsrv_execute($stmt2);
+            if( sqlsrv_execute( $stmt2 ) === false ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
             print($result2);
             while($row = sqlsrv_fetch_object($result2)) {
                 print_r($row);
