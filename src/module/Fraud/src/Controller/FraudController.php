@@ -50,9 +50,7 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
             //$sql = "SELECT @@Version as SQL_VERSION";
-            $sql1 = "
-            IF OBJECT_ID('tempdb..##tmpCreditCard') IS NOT NULL DROP TABLE ;
-            select
+            $sql1 = "select
             distinct(email) , 
             paymentsystemname , 
             cardfirstdigits , 
@@ -75,6 +73,9 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;
             ";
+
+            $sql3 = "drop table ##tmpCreditCard";
+
             $db = $this->getDatabase();
             
             if( $db === false ) {
@@ -99,9 +100,10 @@ class FraudController extends AbstractActionController
                 print_r($row);
             }
 
+            
 
             //print($sql2);
-            /*
+            
             $stmt2 = sqlsrv_prepare($db, $sql2, array());
             if( !$stmt2 ) {
                 die( print_r( sqlsrv_errors(), true));
@@ -111,10 +113,10 @@ class FraudController extends AbstractActionController
             if( $result2 === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
-            print($stmt2);
+            
             while($row = sqlsrv_fetch_object($stmt2)) {
                 print_r($row);
-            }*/
+            }
             /*
             $stmt2 = sqlsrv_query( $db, $sql2);
             if( $stmt2 === false ) {
@@ -123,6 +125,16 @@ class FraudController extends AbstractActionController
             while($row = sqlsrv_fetch_object($stmt2)) {
                 print_r($row);
             }*/
+
+            $stmt3 = sqlsrv_prepare($db, $sql3, array());
+            if( !$stmt3 ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
+            $result3 = sqlsrv_execute($stmt3);
+            
+            if( $result3 === false ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
 
             //$data = sqlsrv_fetch_object($stmt);
             //var_dump($data);
