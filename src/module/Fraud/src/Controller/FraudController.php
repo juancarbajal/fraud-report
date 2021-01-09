@@ -100,8 +100,6 @@ class FraudController extends AbstractActionController
                 print_r($row);
             }
 
-            die;
-
             //print($sql2);
             
             $stmt2 = sqlsrv_prepare($db, $sql2, array());
