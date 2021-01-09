@@ -55,7 +55,7 @@ class FraudController extends AbstractActionController
             paymentsystemname , 
             cardfirstdigits , 
             lastdigits 
-            into ##tmpCreditCard
+            
             from ordenes 
             where creationdate BETWEEN '2020-12-01' and '2020-12-30' ;
             ";
@@ -74,7 +74,7 @@ class FraudController extends AbstractActionController
             having count(1)>1;
             ";
             $sql2 = "select count(1) from ordenes;";
-$sql1 = $sql2;
+
             $sql3 = "drop table ##tmpCreditCard;";
 
             $db = $this->getDatabase();
