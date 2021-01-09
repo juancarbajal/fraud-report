@@ -31,7 +31,6 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            echo 'entro'; die;
             $sql = "select 
             paymentsystemname
             , cardfirstdigits
@@ -60,6 +59,7 @@ class FraudController extends AbstractActionController
                 die( print_r( sqlsrv_errors(), true));
             }
             $data = sqlsrv_fetch_object( $stmt);
+            print_r($data);die;
         }
         return new ViewModel(['data' => $data]);
     }
