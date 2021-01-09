@@ -98,6 +98,7 @@ class FraudController extends AbstractActionController
             while($row = sqlsrv_fetch_object($stmt1)) {
                 $data[] = $row;
             }
+            print_r($data);
 
 /*            
             $stmt2 = sqlsrv_prepare($db, $sql2, array());
