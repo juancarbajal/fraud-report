@@ -84,11 +84,12 @@ class FraudController extends AbstractActionController
             if( !$stmt1 ) {
                 die( print_r( sqlsrv_errors(), true));
             }
-
             $result1 = sqlsrv_execute($stmt1);
+            /*
             if( $result1 === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
+            */
             /*var_dump($stmt1);
             while($row = sqlsrv_fetch_object($stmt1)) {
                 print_r($row);
