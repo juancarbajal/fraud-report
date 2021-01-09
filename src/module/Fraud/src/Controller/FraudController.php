@@ -78,8 +78,8 @@ class FraudController extends AbstractActionController
             if( $db === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
-            print($sql1);
-            sqlsrv_begin_transaction($db);
+            //print($sql1);
+            //sqlsrv_begin_transaction($db);
 
             $stmt1 = sqlsrv_prepare($db, $sql1);
             if( !$stmt1 ) {
@@ -92,7 +92,7 @@ class FraudController extends AbstractActionController
             }
             print_r($result1);
 
-            print($sql2);
+            //print($sql2);
             $stmt2 = sqlsrv_prepare($db, $sql2);
             if( !$stmt2 ) {
                 die( print_r( sqlsrv_errors(), true));
@@ -116,7 +116,7 @@ class FraudController extends AbstractActionController
 
             //$data = sqlsrv_fetch_object($stmt);
             //var_dump($data);
-            sqlsrv_commit($db);
+            //sqlsrv_commit($db);
             die;
         }
         return new ViewModel(['data' => $data]);
