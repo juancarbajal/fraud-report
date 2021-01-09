@@ -20,6 +20,32 @@ class FraudController extends AbstractActionController
             return $link;
 
     }
+
+    private function executeQuery($query){
+        $db = $this->getDatabase();
+            
+        if( $db === false ) {
+            die( print_r( sqlsrv_errors(), true));
+        }
+
+        sqlsrv_begin_transaction($db);
+
+        $stmt1 = sqlsrv_prepare($db, $sql1, array());
+        if( !$stmt1 ) {
+            die( print_r( sqlsrv_errors(), true));
+        }
+        $result1 = sqlsrv_execute($stmt1);
+        
+        if( $result1 === false ) {
+            die( print_r( sqlsrv_errors(), true));
+        }
+        $data = [];
+        while($row = sqlsrv_fetch_object($stmt1)) {
+            $data[] = $row;
+        }
+        return $data;
+    }
+
     public function indexAction()
     {
         return new ViewModel();
@@ -49,89 +75,12 @@ class FraudController extends AbstractActionController
             , cardfirstdigits
             , lastdigits
             having count(1)>1;";
-/*
-            $sql1 = "select
-            distinct(email) , 
-            paymentsystemname , 
-            cardfirstdigits , 
-            lastdigits 
-            into ##tmpCreditCard
-            from ordenes 
-            where creationdate BETWEEN '2020-12-01' and '2020-12-30' ;
-            ";
 
-            $sql2 ="
-            select 
-            paymentsystemname
-            , cardfirstdigits
-            , lastdigits
-            , count(1) as cnt
-            into ##tmp2CreditCard
-            from 
-            ##tmpCreditCard 
-            group by paymentsystemname
-            , cardfirstdigits
-            , lastdigits
-            having count(1)>1;
-            ";
-
-            $sql3 = "select * from ##tmp2CreditCard;";
-*/
-            $db = $this->getDatabase();
-            
-            if( $db === false ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-
-            sqlsrv_begin_transaction($db);
-
-            $stmt1 = sqlsrv_prepare($db, $sql1, array());
-            if( !$stmt1 ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-            $result1 = sqlsrv_execute($stmt1);
-            
-            if( $result1 === false ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-            $data = [];
-            while($row = sqlsrv_fetch_object($stmt1)) {
-                $data[] = $row;
-            }
-            //print_r($data);
-
-/*            
-            $stmt2 = sqlsrv_prepare($db, $sql2, array());
-            if( !$stmt2 ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-            
-            $result2 = sqlsrv_execute($stmt2);
-
-            if( $result2 === false ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-
-            while($row = sqlsrv_fetch_object($stmt2)) {
-                print_r($row);
-            }
+            return new ViewModel(['data' => $this->executeQuery($sql1)]);
  
-            $stmt3 = sqlsrv_prepare($db, $sql3, array());
-            if( !$stmt3 ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-            $result3 = sqlsrv_execute($stmt3);
-            
-            if( $result3 === false ) {
-                die( print_r( sqlsrv_errors(), true));
-            }
-            while($row = sqlsrv_fetch_object($stmt3)) {
-                print_r($row);
-            }
-            sqlsrv_commit($db);
-*/
         }
-        return new ViewModel(['data' => $data]);
+        else 
+            return new ViewModel();
     }
 
     public function documentAction()
