@@ -70,7 +70,6 @@ class FraudController extends AbstractActionController
             , cardfirstdigits
             , lastdigits
             having count(1)>1;
-
             drop table ##tmpCreditCard;
             ";
             $db = $this->getDatabase();
@@ -95,7 +94,7 @@ class FraudController extends AbstractActionController
             while($row = sqlsrv_fetch_object($stmt1)) {
                 print_r($row);
             }
-            die;
+            
 
             //print($sql2);
             $stmt2 = sqlsrv_prepare($db, $sql2, array());
