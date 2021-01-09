@@ -73,6 +73,7 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;
             ";
+            $sql2 = "select count(1) from ordenes";
 
             $sql3 = "drop table ##tmpCreditCard";
 
@@ -110,10 +111,11 @@ class FraudController extends AbstractActionController
             }
             
             $result2 = sqlsrv_execute($stmt2);
+
             if( $result2 === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
-            
+
             while($row = sqlsrv_fetch_object($stmt2)) {
                 print_r($row);
             }
