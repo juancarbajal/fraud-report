@@ -49,7 +49,7 @@ class FraudController extends AbstractActionController
             , cardfirstdigits
             , lastdigits
             having count(1)>1;";
-            $sql = "SELECT @@Version as SQL_VERSION";
+            //$sql = "SELECT @@Version as SQL_VERSION";
             $db = $this->getDatabase();
             if( $db === false ) {
                 die( print_r( sqlsrv_errors(), true));
