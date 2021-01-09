@@ -31,7 +31,7 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            
+            echo 'entro'; die;
             $sql = "select 
             paymentsystemname
             , cardfirstdigits
