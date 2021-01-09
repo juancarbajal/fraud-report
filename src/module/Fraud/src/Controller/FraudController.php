@@ -70,8 +70,6 @@ class FraudController extends AbstractActionController
             , cardfirstdigits
             , lastdigits
             having count(1)>1;
-
-            drop table ##tmpCreditCard;
             ";
             $db = $this->getDatabase();
             
