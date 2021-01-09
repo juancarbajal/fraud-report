@@ -65,7 +65,7 @@ class FraudController extends AbstractActionController
             paymentsystemname
             , cardfirstdigits
             , lastdigits
-            , count(1)
+            , count(1) as cnt
             into ##tmp2CreditCard
             from 
             ##tmpCreditCard 
