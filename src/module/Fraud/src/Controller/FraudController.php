@@ -28,10 +28,10 @@ class FraudController extends AbstractActionController
 
     public function creditCardAction()
     {
-        $from = $_REQUEST['desde'];
-        $to = $_REQUEST['hasta'];
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            $db = $this->getDatabase();
+            
             $sql = "select 
             paymentsystemname
             , cardfirstdigits
@@ -51,6 +51,10 @@ class FraudController extends AbstractActionController
             , cardfirstdigits
             , lastdigits
             having count(1)>1;";
+            $db = $this->getDatabase();
+            if( $conn === false ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
             $stmt = sqlsrv_query( $db, $sql);
             if( $stmt === false ) {
                 die( print_r( sqlsrv_errors(), true));
