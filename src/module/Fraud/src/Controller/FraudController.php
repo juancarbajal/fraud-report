@@ -50,7 +50,9 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
             //$sql = "SELECT @@Version as SQL_VERSION";
-            $sql1 = "select
+            $sql1 = "
+            IF OBJECT_ID('tempdb..##tmpCreditCard') IS NOT NULL DROP TABLE ;
+            select
             distinct(email) , 
             paymentsystemname , 
             cardfirstdigits , 
