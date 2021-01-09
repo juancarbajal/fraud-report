@@ -55,6 +55,7 @@ class FraudController extends AbstractActionController
             paymentsystemname , 
             cardfirstdigits , 
             lastdigits 
+            into ##tmpCreditCard
             from ordenes 
             where creationdate BETWEEN '2020-12-01' and '2020-12-30' ;
             ";
@@ -66,7 +67,7 @@ class FraudController extends AbstractActionController
             , lastdigits
             , count(1)
             from 
-            ##tmpCreditCard as m 
+            ##tmpCreditCard 
             group by paymentsystemname
             , cardfirstdigits
             , lastdigits
