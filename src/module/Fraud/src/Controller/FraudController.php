@@ -84,7 +84,28 @@ class FraudController extends AbstractActionController
 
     public function documentAction()
     {
-        return new ViewModel();
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        if (isset($from) && isset($to)){
+            $sql1 = "select 
+            clientedocument
+            , count(1) as cnt
+            from 
+            (
+                select 
+                distinct(email)
+                , clientedocument
+                from ordenes
+                where creationdate BETWEEN '$from' and '$to'
+            ) as m 
+            group by clientedocument
+            having count(1)>1;";
+
+            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+ 
+        }
+        else 
+            return new ViewModel();
     }
 
     public function phoneAction()
