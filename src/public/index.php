@@ -7,7 +7,7 @@ use Laminas\Stdlib\ArrayUtils;
 
 
 if ($_SERVER['APPLICATION_ENV'] === 'development') {
-    error_reporting(E_ALL);
+    error_reporting(E_ALL && ~E_NOTICE);
     ini_set("display_errors", '1');
 }
 

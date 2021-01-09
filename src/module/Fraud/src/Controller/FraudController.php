@@ -52,7 +52,7 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
             $db = $this->getDatabase();
-            if( $conn === false ) {
+            if( $db === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
             $stmt = sqlsrv_query( $db, $sql);
