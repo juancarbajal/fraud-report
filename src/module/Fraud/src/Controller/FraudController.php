@@ -50,11 +50,12 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
             //$sql = "SELECT @@Version as SQL_VERSION";
-            $sql1 = "select into ##tmpCreditCard 
+            $sql1 = "select
             distinct(email) , 
             paymentsystemname , 
             cardfirstdigits , 
             lastdigits 
+            into ##tmpCreditCard
             from ordenes 
             where creationdate BETWEEN '2020-12-01' and '2020-12-30' ";
             $sql ="
