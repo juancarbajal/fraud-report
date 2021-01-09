@@ -95,9 +95,9 @@ class FraudController extends AbstractActionController
                 die( print_r( sqlsrv_errors(), true));
             }
             
-            while($row = sqlsrv_fetch_object($stmt1)) {
+            /*while($row = sqlsrv_fetch_object($stmt1)) {
                 print_r($row);
-            }
+            }*/
 
 /*            
             $stmt2 = sqlsrv_prepare($db, $sql2, array());
@@ -129,9 +129,8 @@ class FraudController extends AbstractActionController
             }
             sqlsrv_commit($db);
 */
-            die;
         }
-        return new ViewModel(['data' => $data]);
+        return new ViewModel(['data' => $stmt1]);
     }
 
     public function documentAction()
