@@ -73,7 +73,7 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;
             ";
-            $sql2 = "select top 10 * from ordenes;";
+            //$sql2 = "select top 10 * from ordenes;";
             $sql3 = "drop table ##tmpCreditCard;";
 
             $db = $this->getDatabase();
