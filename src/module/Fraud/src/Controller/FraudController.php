@@ -71,11 +71,13 @@ class FraudController extends AbstractActionController
             having count(1)>1;
             ";
             $db = $this->getDatabase();
+            
             if( $db === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
             //sqlsrv_query($db,$sql1);
             //print($sql);
+            sqlsrv_begin_transaction($db);
             
             $stmt1 = sqlsrv_prepare($db, $sql1);
             if( !$stmt1 ) {
@@ -84,6 +86,8 @@ class FraudController extends AbstractActionController
 
             $result1 = sqlsrv_execute($stmt1);
             print_r($result1);
+
+
             $stmt = sqlsrv_prepare($db, $sql);
             if( !$stmt ) {
                 die( print_r( sqlsrv_errors(), true));
@@ -104,6 +108,7 @@ class FraudController extends AbstractActionController
 
             //$data = sqlsrv_fetch_object($stmt);
             //var_dump($data);
+            sqlsrv_commit($db);
             die;
         }
         return new ViewModel(['data' => $data]);
