@@ -59,9 +59,12 @@ class FraudController extends AbstractActionController
             if( $stmt === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
-            var_dump($stmt);
-            $data = sqlsrv_fetch_object($stmt);
-            var_dump($data);die;
+            while($row = sqlsrv_fetch_object($stmt)) {
+                print_r($row);
+            }
+            //$data = sqlsrv_fetch_object($stmt);
+            //var_dump($data);
+            die;
         }
         return new ViewModel(['data' => $data]);
     }
