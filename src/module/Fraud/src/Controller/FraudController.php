@@ -58,14 +58,6 @@ class FraudController extends AbstractActionController
             from ordenes 
             where creationdate BETWEEN '2020-12-01' and '2020-12-30' ";
             $sql ="
-            select into ##tmpCreditCard 
-            distinct(email) , 
-            paymentsystemname , 
-            cardfirstdigits , 
-            lastdigits 
-            from ordenes 
-            where creationdate BETWEEN '2020-12-01' and '2020-12-30';
-
             select 
             paymentsystemname
             , cardfirstdigits
@@ -85,8 +77,20 @@ class FraudController extends AbstractActionController
             //sqlsrv_query($db,$sql1);
             //print($sql);
             
+            $stmt1 = sqlsrv_prepare($db, $sql1);
+            if( !$stmt1 ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
+
+            $result1 = sqlsrv_execute($stmt1);
+
             $stmt = sqlsrv_prepare($db, $sql);
+            if( !$stmt ) {
+                die( print_r( sqlsrv_errors(), true));
+            }
+
             $result = sqlsrv_execute($stmt);
+
             while($row = sqlsrv_fetch_object($result)) {
                 print_r($row);
             }
