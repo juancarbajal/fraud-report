@@ -50,12 +50,31 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
             //$sql = "SELECT @@Version as SQL_VERSION";
-            $sql = "select distinct(email) , paymentsystemname , cardfirstdigits , lastdigits from ordenes where creationdate BETWEEN '2020-12-01' and '2020-12-30' ";
+            $sql1 = "select into ##tmpCreditCard 
+            distinct(email) , 
+            paymentsystemname , 
+            cardfirstdigits , 
+            lastdigits 
+            from ordenes 
+            where creationdate BETWEEN '2020-12-01' and '2020-12-30' ";
+            $sql ="select 
+            paymentsystemname
+            , cardfirstdigits
+            , lastdigits
+            , count(1)
+            from 
+            ##tmpCreditCard as m 
+            group by paymentsystemname
+            , cardfirstdigits
+            , lastdigits
+            having count(1)>1;
+            ";
             $db = $this->getDatabase();
             if( $db === false ) {
                 die( print_r( sqlsrv_errors(), true));
             }
             print($sql);
+            sqlsrv_execute($db,$sql1);
             $stmt = sqlsrv_query( $db, $sql);
             if( $stmt === false ) {
                 die( print_r( sqlsrv_errors(), true));
