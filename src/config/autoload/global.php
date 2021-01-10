@@ -14,4 +14,26 @@
 
 return [
     // ...
+    'navigation' => [
+        'default' => [
+            [
+                'label' => 'Home',
+                'route' => 'home',
+            ],
+            [
+                'label' => 'Page #1',
+                'route' => 'page-1',
+                'pages' => [
+                    [
+                        'label' => 'Child #1',
+                        'route' => 'page-1-child',
+                    ],
+                ],
+            ],
+            [
+                'label' => 'Page #2',
+                'route' => 'page-2',
+            ],
+        ],
+    ],
 ];
