@@ -15,7 +15,13 @@ class FraudController extends AbstractActionController
             "Uid" => "admin",
             "PWD" => "A8WYS9q2*z"
         );
-                
+
+        $serverName = "prod-sugo-apps2.cjefewagaayr.us-east-1.rds.amazonaws.com";
+        $connectionOptions = array(
+            "Database" => "db-sugo-vtext-02",
+            "Uid" => "admin",
+            "PWD" => "y8WgS7q2*z"
+        );        
         $link = sqlsrv_connect($serverName,$connectionOptions);
             return $link;
 
