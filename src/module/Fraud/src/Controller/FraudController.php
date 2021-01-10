@@ -217,7 +217,7 @@ class FraudController extends AbstractActionController
     public function phoneDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
-        $document = $_REQUEST['phone'];
+        $phone = $_REQUEST['phone'];
         $sql = "select 
         orderid
         , creationdate
