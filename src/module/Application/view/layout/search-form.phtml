@@ -1,15 +1,14 @@
 
           <form class="needs-validation" novalidate>
             <div class='form'>
-              <div class="row g-3 input-group input-daterange">
-                <div class="col-sm-4">
+              <div class="row g-3">
+                <div class="col-sm-4  input-group input-daterange">
                   <label for="from" class="form-label">Desde</label>
                   <input type="text" class="input-sm form-control" id="from" name='from' value="<?=(isset($this->from))?$this->from:''?>" autocomplete="off" required>
                   <div class="invalid-feedback">
                     Fecha valida requerida
                   </div>
-                </div>
-                <div class="col-sm-4">
+                
                   <label for="to" class="form-label"l>Hasta</label>
                   <input type="text" class="input-sm form-control" id="to" name='to' value="<?=(isset($this->to))?$this->to:''?>" autocomplete="off" required>
                   <div class="invalid-feedback">
