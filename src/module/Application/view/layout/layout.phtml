@@ -19,9 +19,12 @@
         <meta name="theme-color" content="#563d7c">
         <script type="text/javascript">
         $(document).ready(function () {
-            $('.datepicker').datepicker({
+            /*$('.datepicker').datepicker({
             format: "yyyy-mm-dd",
             language: "es"
+            });*/
+            $('.input-daterange input').each(function() {
+                $(this).datepicker('clearDates');
             });
         });
         
