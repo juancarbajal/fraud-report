@@ -14,6 +14,7 @@
 return [
     'Laminas\Router',
     'Laminas\Validator',
+    'Laminas\Navigation',
     'Application',
     'Fraud'
 ];
