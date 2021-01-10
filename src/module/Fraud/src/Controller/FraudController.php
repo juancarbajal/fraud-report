@@ -103,7 +103,9 @@ class FraudController extends AbstractActionController
             group by clientedocument
             having count(1)>1;";
 
-            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+            return new ViewModel(['data' => $this->executeQuery($sql1),
+            'from' => $from,
+            'to' => $to]);
  
         }
         else 
@@ -129,7 +131,9 @@ class FraudController extends AbstractActionController
             group by phone
             having count(1)>1;";
 
-            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+            return new ViewModel(['data' => $this->executeQuery($sql1),
+            'from' => $from,
+            'to' => $to]);
  
         }
         else 
@@ -157,7 +161,9 @@ class FraudController extends AbstractActionController
             group by street_total
             having count(1)>1;";
 
-            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+            return new ViewModel(['data' => $this->executeQuery($sql1),
+            'from' => $from,
+            'to' => $to]);
  
         }
         else 
@@ -165,10 +171,6 @@ class FraudController extends AbstractActionController
     }
 
     //Detalle
-    public function addressDetailAction(){
-
-        return new ViewModel();
-    }
     public function creditCardDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
@@ -189,5 +191,70 @@ class FraudController extends AbstractActionController
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
         'card' => $card]);
+    }
+    public function documentDetailAction() {
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        $document = $_REQUEST['document'];
+        $sql = "select 
+        orderid
+        , creationdate
+        , email
+        , clientefirstname
+        , clientelastname
+        , totalvalue
+        , count(skuquantity) as cantsku
+        , sum(skuquantity) as totalsku 
+        from ordenes 
+        where creationdate BETWEEN '$from' and '$to'
+        and clientedocument = '$document'
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        $data = $this->executeQuery($sql);
+        return new ViewModel(['data' => $data, 
+        'document' => $document]);
+    }
+
+    public function phoneDetailAction() {
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        $document = $_REQUEST['phone'];
+        $sql = "select 
+        orderid
+        , creationdate
+        , email
+        , clientefirstname
+        , clientelastname
+        , totalvalue
+        , count(skuquantity) as cantsku
+        , sum(skuquantity) as totalsku 
+        from ordenes 
+        where creationdate BETWEEN '$from' and '$to'
+        and phone like '%$phone'
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        $data = $this->executeQuery($sql);
+        return new ViewModel(['data' => $data, 
+        'document' => $phone]);
+    }
+
+    public function addressDetailAction() {
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        $address = $_REQUEST['address'];
+        $sql = "select 
+        orderid
+        , creationdate
+        , email
+        , clientefirstname
+        , clientelastname
+        , totalvalue
+        , count(skuquantity) as cantsku
+        , sum(skuquantity) as totalsku 
+        from ordenes 
+        where creationdate BETWEEN '$from' and '$to'
+        and concat(city, ', ', street, ' ', number) = '$address'
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        $data = $this->executeQuery($sql);
+        return new ViewModel(['data' => $data, 
+        'address' => $address]);
     }
 }

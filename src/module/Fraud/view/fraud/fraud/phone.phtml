@@ -14,7 +14,7 @@
                 <tr>
                   <td><?=$row->phone?></td>
                   <td><?=$row->cnt?></td>
-                  <td><a href=''>Revisar</a></td>
+                  <td><a href='/fraud/phone-detail?from=<?=$this->from?>&to=<?=$this->to?>&phone=<?=$row->phone?>'>Revisar</a></td>
                 </tr>
 <?php }?>
               </tbody>

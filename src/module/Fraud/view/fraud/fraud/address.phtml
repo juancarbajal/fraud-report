@@ -14,7 +14,7 @@
                 <tr>
                   <td><?=$row->street_total?></td>
                   <td><?=$row->cnt?></td>
-                  <td><a href=''>Revisar</a></td>
+                  <td><a href='/fraud/address-detail?from=<?=$this->from?>&to=<?=$this->to?>&address=<?=$row->street_total?>'>Revisar</a></td>
                 </tr>
               <?php }?>
               </tbody>

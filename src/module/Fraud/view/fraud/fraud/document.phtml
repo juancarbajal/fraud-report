@@ -14,7 +14,7 @@
                 <tr>
                   <td><?=$row->clientedocument?></td>
                   <td><?=$row->cnt?></td>
-                  <td><a href=''>Revisar</a></td>
+                  <td><a href='/fraud/document-detail?from=<?=$this->from?>&to=<?=$this->to?>&document=<?=$row->clientedocument?>'>Revisar</a></td>
                 </tr>
               <?php }?>
               </tbody>
