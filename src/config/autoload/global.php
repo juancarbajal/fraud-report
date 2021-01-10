@@ -17,22 +17,22 @@ return [
     'navigation' => [
         'default' => [
             [
-                'label' => 'Home',
+                'label' => 'Inicio',
                 'route' => 'home',
             ],
             [
                 'label' => 'Page #1',
-                'route' => 'page-1',
+                'route' => 'fraud',
                 'pages' => [
                     [
                         'label' => 'Child #1',
-                        'route' => 'page-1-child',
+                        'route' => 'credit-card',
                     ],
                 ],
             ],
             [
                 'label' => 'Page #2',
-                'route' => 'page-2',
+                'route' => 'fraud',
             ],
         ],
     ],
