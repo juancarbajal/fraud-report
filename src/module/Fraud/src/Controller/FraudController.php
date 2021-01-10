@@ -75,6 +75,7 @@ class FraudController extends AbstractActionController
                 , lastdigits
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
+                and status='Preparando Entrega'
             ) as m 
             group by paymentsystemname
             , cardfirstdigits
@@ -106,6 +107,7 @@ class FraudController extends AbstractActionController
                 , clientedocument
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
+                and status='Preparando Entrega'
             ) as m 
             group by clientedocument
             having count(1)>1
@@ -135,6 +137,7 @@ class FraudController extends AbstractActionController
                 , replace(phone, '+51', '') as phone
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
+                and status='Preparando Entrega'
             ) as m 
             group by phone
             having count(1)>1
@@ -166,6 +169,7 @@ class FraudController extends AbstractActionController
                 , number
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
+                and status='Preparando Entrega'
             ) as m 
             group by street_total
             having count(1)>1
@@ -197,6 +201,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
+        and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
@@ -218,6 +223,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and clientedocument = '$document'
+        and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
@@ -240,6 +246,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
+        and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
@@ -262,6 +269,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and concat(city, ', ', street, ' ', number) = '$address'
+        and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
