@@ -1,16 +1,16 @@
         <form class="needs-validation" novalidate>
             <div class='form'>
-              <div class="row g-3">
+              <div class="row g-3 input-daterange input-group" id='datepicker'>
                 <div class="col-sm-4">
                   <label for="desde" class="form-label"l>Desde</label>
-                  <input type="text" class="form-control" id="from" name='from' value="<?=(isset($this->from))?$this->from:''?>" required>
+                  <input type="text" class="input-sm form-control" id="from" name='from' value="<?=(isset($this->from))?$this->from:''?>" required>
                   <div class="invalid-feedback">
                     Fecha valida requerida
                   </div>
                 </div>
                 <div class="col-sm-4">
                   <label for="desde" class="form-label"l>Hasta</label>
-                  <input type="text" class="form-control" id="to" name='to' value="<?=(isset($this->to))?$this->to:''?>" required>
+                  <input type="text" class="input-sm form-control" id="to" name='to' value="<?=(isset($this->to))?$this->to:''?>" required>
                   <div class="invalid-feedback">
                     Fecha valida requerida
                   </div>
