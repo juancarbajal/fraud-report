@@ -16,7 +16,7 @@
                   <td><?=$row->cardfirstdigits?>..<?=$row->lastdigits?></td>
                   <td><?=$row->paymentsystemname?></td>
                   <td><?=$row->cnt?></td>
-                  <td><a href=''>Revisar</a></td>
+                  <td><a href='/fraud/credit-card-detail?from=<?=$this->from?>&to=<?=$this->to?>&card=<?=' ' + $row->cardfirstdigits+'|'+$row->lastdigits ?>'>Revisar</a></td>
                 </tr>
 <?php } ?>
                 

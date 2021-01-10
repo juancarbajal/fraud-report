@@ -75,7 +75,9 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1;";
 
-            return new ViewModel(['data' => $this->executeQuery($sql1)]);
+            return new ViewModel(['data' => $this->executeQuery($sql1),
+            'from' => $from,
+            'to' => $to]);
  
         }
         else 
@@ -160,5 +162,11 @@ class FraudController extends AbstractActionController
         }
         else 
             return new ViewModel();
+    }
+
+    //Detalle
+    public function addressDetailAction(){
+
+        return new ViewModel();
     }
 }
