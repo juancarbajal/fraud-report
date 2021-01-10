@@ -169,4 +169,25 @@ class FraudController extends AbstractActionController
 
         return new ViewModel();
     }
+    public function creditCardDetailAction() {
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        $card = explode('-', $_REQUEST['card']);
+        $sql = "select 
+        orderid
+        , creationdate
+        , email
+        , clientefirstname
+        , clientelastname
+        , totalvalue
+        , count(skuquantity) as cantsku
+        , sum(skuquantity) as totalsku 
+        from ordenes 
+        where creationdate BETWEEN '$from' and '$to'
+        and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        $data = $this->executeQuery($sql);
+        return new ViewModel(['data' => $data, 
+        'card' => $card]);
+    }
 }
