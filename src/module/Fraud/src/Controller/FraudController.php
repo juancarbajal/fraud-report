@@ -233,7 +233,7 @@ class FraudController extends AbstractActionController
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
-        'document' => $phone]);
+        'phone' => $phone]);
     }
 
     public function addressDetailAction() {
