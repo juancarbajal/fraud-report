@@ -19,7 +19,7 @@
         <meta name="theme-color" content="#563d7c">
         <script type="text/javascript">
         $('#sandbox-container .input-daterange').datepicker({
-            format: "dd-mm-yyyy",
+            format: "yyyy-mm-dd",
             language: "es"
         });
         </script>
@@ -28,6 +28,9 @@
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 main-yellow border-bottom shadow-sm" >
             <h5 class="my-0 mr-md-auto font-weight-bold">SUGO | Revisión de fraudes</h5>    
         </div>  
+        
+        <div class="span5 col-md-5" id="sandbox-container"></div>
+       
         <main class="container">
             <?= $this->content ?>
         </main>
