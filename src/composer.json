@@ -10,10 +10,11 @@
         "framework"
     ],
     "require": {
-        "php": "^5.4",
+        "php": "^7.3",
         "laminas/laminas-component-installer": "^1.0 || ^2.1",
         "laminas/laminas-development-mode": "^3.2",
-        "laminas/laminas-mvc": "^3.1.1"
+        "laminas/laminas-mvc": "^3.1.1",
+        "laminas/laminas-navigation": "^2.10"
     },
     "autoload": {
         "psr-4": {
