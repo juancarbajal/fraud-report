@@ -1,4 +1,4 @@
-<?= $this->partial('layout/search-form.phtml', []); ?>
+<?= $this->partial('layout/search-form.phtml', ['from' => $this->from, 'to' => $this->to]); ?>
 <?php if (isset($this->data)) {?>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
