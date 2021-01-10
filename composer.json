@@ -1,0 +1,5 @@
+{
+    "require": {
+        "laminas/laminas-navigation": "^2.10"
+    }
+}
