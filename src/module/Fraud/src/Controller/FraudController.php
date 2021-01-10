@@ -79,7 +79,8 @@ class FraudController extends AbstractActionController
             group by paymentsystemname
             , cardfirstdigits
             , lastdigits
-            having count(1)>1;";
+            having count(1)>1
+            order by cnt desc;";
 
             return new ViewModel(['data' => $this->executeQuery($sql1),
             'from' => $from,
@@ -107,7 +108,8 @@ class FraudController extends AbstractActionController
                 where creationdate BETWEEN '$from' and '$to'
             ) as m 
             group by clientedocument
-            having count(1)>1;";
+            having count(1)>1
+            order by cnt desc;";
 
             return new ViewModel(['data' => $this->executeQuery($sql1),
             'from' => $from,
@@ -135,7 +137,8 @@ class FraudController extends AbstractActionController
                 where creationdate BETWEEN '$from' and '$to'
             ) as m 
             group by phone
-            having count(1)>1;";
+            having count(1)>1
+            order by cnt desc;";
 
             return new ViewModel(['data' => $this->executeQuery($sql1),
             'from' => $from,
@@ -165,7 +168,8 @@ class FraudController extends AbstractActionController
                 where creationdate BETWEEN '$from' and '$to'
             ) as m 
             group by street_total
-            having count(1)>1;";
+            having count(1)>1
+            order by cnt desc;";
 
             return new ViewModel(['data' => $this->executeQuery($sql1),
             'from' => $from,
