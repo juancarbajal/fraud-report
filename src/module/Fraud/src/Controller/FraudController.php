@@ -130,7 +130,17 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            $sql1 = "select 
+            return new ViewModel(['data' => $this->_phone($from, $to),
+            'from' => $from,
+            'to' => $to]);
+ 
+        }
+        else 
+            return new ViewModel();
+    }
+
+    private function _phone($from, $to){
+        $sql1 = "select 
             phone
             , count(1) as cnt
             from 
@@ -145,40 +155,14 @@ class FraudController extends AbstractActionController
             group by phone
             having count(1)>1
             order by cnt desc;";
-
-            return new ViewModel(['data' => $this->executeQuery($sql1),
-            'from' => $from,
-            'to' => $to]);
- 
-        }
-        else 
-            return new ViewModel();
+        return $this->executeQuery($sql1);
     }
-
     public function addressAction()
     {   
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            $sql1 = "select 
-            street_total
-            , count(1) as cnt
-            from 
-            (
-                select 
-                distinct(email)
-                , addresstype
-                , concat(city, ', ', street, ' ', number) as street_total
-                , number
-                from ordenes
-                where creationdate BETWEEN '$from' and '$to'
-                and status='Preparando Entrega'
-            ) as m 
-            group by street_total
-            having count(1)>1
-            order by cnt desc;";
-
-            return new ViewModel(['data' => $this->executeQuery($sql1),
+            return new ViewModel(['data' => $this->_address($from, $to),
             'from' => $from,
             'to' => $to]);
  
@@ -187,6 +171,26 @@ class FraudController extends AbstractActionController
             return new ViewModel();
     }
 
+    private function _address($from, $To){
+        $sql1 = "select 
+        street_total
+        , count(1) as cnt
+        from 
+        (
+            select 
+            distinct(email)
+            , addresstype
+            , concat(city, ', ', street, ' ', number) as street_total
+            , number
+            from ordenes
+            where creationdate BETWEEN '$from' and '$to'
+            and status='Preparando Entrega'
+        ) as m 
+        group by street_total
+        having count(1)>1
+        order by cnt desc;";
+        return $this->executeQuery($sql1);
+    }
     //Detalle
     public function creditCardDetailAction() {
         $from = $_REQUEST['from'];
@@ -304,11 +308,19 @@ class FraudController extends AbstractActionController
             switch ($p){
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
-                    $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
+                    $this->_dataToExcel($sheet, $data, array('Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'));
                     break;
                 case 'document':
                     $data = $this->_document($from, $to);
-                    $this->_dataToExcel($sheet, $data, array('Documento', 'Usuarios unicos'));
+                    $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'));
+                    break;
+                case 'phone':
+                        $data = $this->_document($from, $to);
+                        $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'));
+                    break;
+                case 'address':
+                        $data = $this->_address($from, $to);
+                        $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'));
                     break;
             }
             $writer = new Csv($spreadsheet);
