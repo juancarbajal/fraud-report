@@ -99,7 +99,7 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            return new ViewModel(['data' => $this->_document($from,$to),
+            return new ViewModel(['data' => $this->_document($from, $to),
             'from' => $from,
             'to' => $to]);
  
@@ -226,7 +226,7 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $document = $_REQUEST['document'];
-        return new ViewModel(['data' => $this->_documentDetail, 
+        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document), 
         'document' => $document,
         'from' => $from,
         'to' => $to]);
