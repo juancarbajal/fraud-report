@@ -310,7 +310,7 @@ class FraudController extends AbstractActionController
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
             $writer->save('php://output');
-            //exit;
+            exit;
         //}
         
         /*$spreadsheet = new Spreadsheet();
