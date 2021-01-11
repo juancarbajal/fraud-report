@@ -4,6 +4,8 @@ namespace Fraud\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class FraudController extends AbstractActionController
 {
@@ -274,5 +276,18 @@ class FraudController extends AbstractActionController
         $data = $this->executeQuery($sql);
         return new ViewModel(['data' => $data, 
         'address' => $address]);
+    }
+
+    public function exportExcelAction(){
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $writer = new Xlsx($spreadsheet);
+        //$writer->save('hello world.xlsx');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
+        $writer->save('php://output');
+
     }
 }
