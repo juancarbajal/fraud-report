@@ -99,7 +99,16 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            $sql1 = "select 
+            return new ViewModel(['data' => $this->_document($from,$to),
+            'from' => $from,
+            'to' => $to]);
+ 
+        }
+        else 
+            return new ViewModel();
+    }
+    private function  _document($from, $to){
+        $sql1 = "select 
             clientedocument
             , count(1) as cnt
             from 
@@ -114,16 +123,8 @@ class FraudController extends AbstractActionController
             group by clientedocument
             having count(1)>1
             order by cnt desc;";
-
-            return new ViewModel(['data' => $this->executeQuery($sql1),
-            'from' => $from,
-            'to' => $to]);
- 
-        }
-        else 
-            return new ViewModel();
+        return $this->executeQuery($sql1);
     }
-
     public function phoneAction()
     {
         $from = $_REQUEST['from'];
@@ -304,6 +305,10 @@ class FraudController extends AbstractActionController
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
                     $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
+                    break;
+                case 'document':
+                    $data = $this->_document($from, $to);
+                    $this->_dataToExcel($sheet, $data, array('Documento', 'Usuarios unicos'));
                     break;
             }
             $writer = new Csv($spreadsheet);
