@@ -206,8 +206,8 @@ class FraudController extends AbstractActionController
     }
     private function _creditCardDetail($from, $to, $card){
         $sql = "select 
-        orderid
-        , creationdate
+        creationdate
+        , orderid
         , email
         , clientefirstname
         , clientelastname
@@ -226,6 +226,12 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $document = $_REQUEST['document'];
+        return new ViewModel(['data' => $this->_documentDetail, 
+        'document' => $document,
+        'from' => $from,
+        'to' => $to]);
+    }
+    private function _documentDetail($from, $to, $document){
         $sql = "select 
         orderid
         , creationdate
@@ -240,15 +246,19 @@ class FraudController extends AbstractActionController
         and clientedocument = '$document'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
-        $data = $this->executeQuery($sql);
-        return new ViewModel(['data' => $data, 
-        'document' => $document]);
+        return $this->executeQuery($sql);
     }
-
     public function phoneDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $phone = $_REQUEST['phone'];
+        
+        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone), 
+        'phone' => $phone,
+        'from' => $from,
+        'to' => $to]);
+    }
+    private function _phoneDetail($from, $to, $phone){
         $sql = "select 
         orderid
         , creationdate
@@ -263,15 +273,19 @@ class FraudController extends AbstractActionController
         and phone like '%$phone'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
-        $data = $this->executeQuery($sql);
-        return new ViewModel(['data' => $data, 
-        'phone' => $phone]);
+        return $this->executeQuery($sql);
     }
-
     public function addressDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $address = $_REQUEST['address'];
+        
+        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address), 
+        'address' => $address,
+        'from' => $from,
+        'to' => $to]);
+    }
+    private function _addressDetail($form, $to, $address) {
         $sql = "select 
         orderid
         , creationdate
@@ -286,9 +300,7 @@ class FraudController extends AbstractActionController
         and concat(city, ', ', street, ' ', number) = '$address'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
-        $data = $this->executeQuery($sql);
-        return new ViewModel(['data' => $data, 
-        'address' => $address]);
+        return $this->executeQuery($sql);
     }
     private function _dataToExcel(&$sheet, $data, $header){
         $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'H', 7=>'I', 8=>'J');
@@ -312,33 +324,55 @@ class FraudController extends AbstractActionController
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             //$sheet->setCellValue("A1", 'Hola mundo');
-            
+            $extension = '.csv';
+            $filename = 'export' . $extension;
+            $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs');
             switch ($p){
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
                     $this->_dataToExcel($sheet, $data, array('Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'));
+                    $filename = 'credit_card_' . $from . '_' . $to . $extension;
                     break;
                 case 'document':
                     $data = $this->_document($from, $to);
                     $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'));
+                    $filename = 'document_' . $from . '_' . $to . $extension;
                     break;
                 case 'phone':
                         $data = $this->_phone($from, $to);
                         $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'));
+                        $filename = 'phone_' . $from . '_' . $to . $extension;
                     break;
                 case 'address':
                         $data = $this->_address($from, $to);
                         $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'));
+                        $filename = 'address_' . $from . '_' . $to . $extension;
                     break;
                 case 'credit-card-detail':
                         $data = $this->_creditCardDetail($from, $to, explode('-', $_REQUEST['card']));
-                        $this->_dataToExcel($sheet, $data, array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs'));
+                        $this->_dataToExcel($sheet, $data, $detailHeader);
+                        $filename = 'credit_card_' . $from . '_' . $to . '_' . $_REQUEST['card'] . $extension;
+                    break;
+                case 'document-detail':
+                        $data = $this->_documentDetail($from, $to, $_REQUEST['document']);
+                        $this->_dataToExcel($sheet, $data, $detailHeader);
+                        $filename = 'document_' . $from . '_' . $to . '_' . $_REQUEST['document'] . $extension;
+                    break;
+                case 'phone-detail':
+                        $data = $this->_documentDetail($from, $to, $_REQUEST['phone']);
+                        $this->_dataToExcel($sheet, $data, $detailHeader);
+                        $filename = 'phone_' . $from . '_' . $to . '_' . $_REQUEST['phone'] . $extension;
+                    break;
+                case 'address-detail':
+                        $data = $this->_documentDetail($from, $to, $_REQUEST['address']);
+                        $this->_dataToExcel($sheet, $data, $detailHeader);
+                        $filename = 'address_' . $from . '_' . $to . '_' . $_REQUEST['address'] . $extension;
                     break;
             }
             $writer = new Csv($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="'. urlencode($fileName).'.csv"');
+            header('Content-Disposition: attachment; filename="'. $filename .'"');
             $writer->save('php://output');
             exit;
         //}
