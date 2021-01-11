@@ -63,7 +63,16 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            $sql1 = "select 
+            return new ViewModel(['data' => $this->_creditCard($from, $to),
+            'from' => $from,
+            'to' => $to]);
+ 
+        }
+        else 
+            return new ViewModel();
+    }
+    private function _creditCard($from, $to){
+        $sql1 = "select 
             paymentsystemname
             , cardfirstdigits
             , lastdigits
@@ -84,16 +93,8 @@ class FraudController extends AbstractActionController
             , lastdigits
             having count(1)>1
             order by cnt desc;";
-
-            return new ViewModel(['data' => $this->executeQuery($sql1),
-            'from' => $from,
-            'to' => $to]);
- 
-        }
-        else 
-            return new ViewModel();
+        return $this->executeQuery($sql1);
     }
-
     public function documentAction()
     {
         $from = $_REQUEST['from'];
@@ -277,9 +278,39 @@ class FraudController extends AbstractActionController
         return new ViewModel(['data' => $data, 
         'address' => $address]);
     }
-
+    private function _dataToExcel($sheet, $data){
+        $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'H', 7=>'I', 8=>'J');
+        foreach ($data as $i => $row){
+            $keys = get_object_vars($row);
+            foreach ($keys as $j => $k){
+                $sheet->setCellValue($letters[$j] . ($i+1), $row->$k);
+            }
+        }
+        return $sheet;
+    }
     public function exportExcelAction(){
-        $spreadsheet = new Spreadsheet();
+
+        $from = $_REQUEST['from'];
+        $to = $_REQUEST['to'];
+        $p = $_REQUEST['p'];
+        if (isset($from) && isset($to) && isset($to)){
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            switch ($p){
+                case 'credit_card': 
+                    $data = $this->_creditCard($from, $to);
+                    $sheet = $this->_dataToExcel($sheet, $data);
+                    break;
+            }
+            $writer = new Xlsx($spreadsheet);
+            //$writer->save('hello world.xlsx');
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
+            $writer->save('php://output');
+            exit;
+        }
+        
+        /*$spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'Hello World !');
 
@@ -288,6 +319,6 @@ class FraudController extends AbstractActionController
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
         $writer->save('php://output');
-
+        */
     }
 }
