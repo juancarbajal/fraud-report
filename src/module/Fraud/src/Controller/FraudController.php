@@ -315,7 +315,7 @@ class FraudController extends AbstractActionController
                     $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'));
                     break;
                 case 'phone':
-                        $data = $this->_document($from, $to);
+                        $data = $this->_phone($from, $to);
                         $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'));
                     break;
                 case 'address':
