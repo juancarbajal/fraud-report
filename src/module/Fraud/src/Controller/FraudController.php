@@ -284,7 +284,7 @@ class FraudController extends AbstractActionController
             $sheet->setCellValue($letters[$i] . '1', $h);
         }
         foreach ($data as $i => $row){
-            $keys = get_object_vars($row);
+            $keys = array_keys(get_object_vars($row));
             foreach ($keys as $j => $k){
                 $sheet->setCellValue($letters[$j] . ($i+2), $row->$k);
             }
