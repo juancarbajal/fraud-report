@@ -73,7 +73,7 @@ class FraudController extends AbstractActionController
     }
     private function _creditCard($from, $to){
         $sql1 = "select 
-            cardfirstdigits+'-'+lastdigits as card
+            concat(cardfirstdigits, '-', lastdigits) as card
             , paymentsystemname
             , count(1) as cnt
             from 
