@@ -299,12 +299,14 @@ class FraudController extends AbstractActionController
         //if (isset($from) && isset($to) && isset($to)){
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue("A1", 'Hola mundo');
+            /*
             switch ($p){
                 case 'credit_card': 
                     $data = $this->_creditCard($from, $to);
                     $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
                     break;
-            }
+            }*/
             $writer = new Csv($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
