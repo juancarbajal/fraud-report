@@ -20,10 +20,10 @@
               <tbody>
 <?php foreach($this->data as $row) {?>
                 <tr>
-                  <td><?=$row->cardfirstdigits?>..<?=$row->lastdigits?></td>
+                  <td><?=$row->card?></td>
                   <td><?=$row->paymentsystemname?></td>
                   <td><?=$row->cnt?></td>
-                  <td><a href='/fraud/credit-card-detail?from=<?=$this->from?>&to=<?=$this->to?>&card=<?=$row->cardfirstdigits . '-' . $row->lastdigits ?>'>Revisar</a></td>
+                  <td><a href='/fraud/credit-card-detail?from=<?=$this->from?>&to=<?=$this->to?>&card=<?=$row->card?>'>Revisar</a></td>
                 </tr>
 <?php } ?>
                 
