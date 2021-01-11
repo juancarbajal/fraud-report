@@ -233,8 +233,8 @@ class FraudController extends AbstractActionController
     }
     private function _documentDetail($from, $to, $document){
         $sql = "select 
-        orderid
-        , creationdate
+        creationdate
+        , orderid
         , email
         , clientefirstname
         , clientelastname
@@ -260,8 +260,8 @@ class FraudController extends AbstractActionController
     }
     private function _phoneDetail($from, $to, $phone){
         $sql = "select 
-        orderid
-        , creationdate
+        creationdate
+        , orderid
         , email
         , clientefirstname
         , clientelastname
@@ -287,8 +287,8 @@ class FraudController extends AbstractActionController
     }
     private function _addressDetail($form, $to, $address) {
         $sql = "select 
-        orderid
-        , creationdate
+        creationdate
+        , orderid
         , email
         , clientefirstname
         , clientelastname
