@@ -278,7 +278,7 @@ class FraudController extends AbstractActionController
         return new ViewModel(['data' => $data, 
         'address' => $address]);
     }
-    private function _dataToExcel($sheet, $data, $header){
+    private function _dataToExcel(&$sheet, $data, $header){
         $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'H', 7=>'I', 8=>'J');
         foreach ($header as $i => $h){
             $sheet->setCellValue($letters[$i] . '1', $h);
@@ -286,7 +286,7 @@ class FraudController extends AbstractActionController
         foreach ($data as $i => $row){
             $keys = get_object_vars($row);
             foreach ($keys as $j => $k){
-                $sheet->setCellValue($letters[$j] . ($i+1), $row->$k);
+                $sheet->setCellValue($letters[$j] . ($i+2), $row->$k);
             }
         }
         return $sheet;
@@ -302,7 +302,7 @@ class FraudController extends AbstractActionController
             switch ($p){
                 case 'credit_card': 
                     $data = $this->_creditCard($from, $to);
-                    $sheet = $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
+                    $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
                     break;
             }
             $writer = new Xlsx($spreadsheet);
