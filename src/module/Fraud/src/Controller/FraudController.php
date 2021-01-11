@@ -366,7 +366,7 @@ class FraudController extends AbstractActionController
                 case 'address-detail':
                         $data = $this->_documentDetail($from, $to, $_REQUEST['address']);
                         $this->_dataToExcel($sheet, $data, $detailHeader);
-                        $filename = 'address_' . $from . '_' . $to . '_' . $_REQUEST['address'] . $extension;
+                        $filename = 'address_' . $from . '_' . $to . '_' . md5($_REQUEST['address']) . $extension;
                     break;
             }
             $writer = new Csv($spreadsheet);
