@@ -283,13 +283,14 @@ class FraudController extends AbstractActionController
         foreach ($header as $i => $h){
             $sheet->setCellValue($letters[$i] . '1', $h);
         }
+        /*
         foreach ($data as $i => $row){
             $keys = get_object_vars($row);
             foreach ($keys as $j => $k){
                 $sheet->setCellValue($letters[$j] . ($i+2), $row->$k);
             }
-        }
-        return $sheet;
+        }*/
+        //return $sheet;
     }
     public function exportExcelAction(){
 
@@ -299,18 +300,18 @@ class FraudController extends AbstractActionController
         //if (isset($from) && isset($to) && isset($to)){
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
-            $sheet->setCellValue("A1", 'Hola mundo');
-            /*
+            //$sheet->setCellValue("A1", 'Hola mundo');
+            
             switch ($p){
                 case 'credit_card': 
                     $data = $this->_creditCard($from, $to);
                     $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
                     break;
-            }*/
+            }
             $writer = new Csv($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
+            header('Content-Disposition: attachment; filename="'. urlencode($fileName).'.csv"');
             $writer->save('php://output');
             exit;
         //}
