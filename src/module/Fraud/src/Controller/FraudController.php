@@ -196,6 +196,15 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $card = explode('-', $_REQUEST['card']);
+        
+        $data = $this->_creditCardDetail($from, $to, $card);
+        return new ViewModel(['data' => $data, 
+        'card' => $card,
+        'from' => $from,
+        'to' => $to]
+        );
+    }
+    private function _creditCardDetail($from, $to, $card){
         $sql = "select 
         orderid
         , creationdate
@@ -210,10 +219,9 @@ class FraudController extends AbstractActionController
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
-        $data = $this->executeQuery($sql);
-        return new ViewModel(['data' => $data, 
-        'card' => $card]);
+        return $this->executeQuery($sql);
     }
+
     public function documentDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
@@ -321,6 +329,10 @@ class FraudController extends AbstractActionController
                 case 'address':
                         $data = $this->_address($from, $to);
                         $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'));
+                    break;
+                case 'credit-card-detail':
+                        $data = $this->_creditCardDetail($from, $to, explode('-', $_REQUEST['card']));
+                        $this->_dataToExcel($sheet, $data, array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs'));
                     break;
             }
             $writer = new Csv($spreadsheet);
