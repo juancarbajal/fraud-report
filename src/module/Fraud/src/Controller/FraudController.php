@@ -5,7 +5,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xml;
+use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
 class FraudController extends AbstractActionController
 {
@@ -305,7 +305,7 @@ class FraudController extends AbstractActionController
                     $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
                     break;
             }
-            $writer = new Xml($spreadsheet);
+            $writer = new Csv($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
