@@ -359,12 +359,12 @@ class FraudController extends AbstractActionController
                         $filename = 'document_' . $from . '_' . $to . '_' . $_REQUEST['document'] . $extension;
                     break;
                 case 'phone-detail':
-                        $data = $this->_documentDetail($from, $to, $_REQUEST['phone']);
+                        $data = $this->_phoneDetail($from, $to, $_REQUEST['phone']);
                         $this->_dataToExcel($sheet, $data, $detailHeader);
                         $filename = 'phone_' . $from . '_' . $to . '_' . $_REQUEST['phone'] . $extension;
                     break;
                 case 'address-detail':
-                        $data = $this->_documentDetail($from, $to, $_REQUEST['address']);
+                        $data = $this->_addressDetail($from, $to, $_REQUEST['address']);
                         $this->_dataToExcel($sheet, $data, $detailHeader);
                         $filename = 'address_' . $from . '_' . $to . '_' . md5($_REQUEST['address']) . $extension;
                     break;
