@@ -278,8 +278,11 @@ class FraudController extends AbstractActionController
         return new ViewModel(['data' => $data, 
         'address' => $address]);
     }
-    private function _dataToExcel($sheet, $data){
+    private function _dataToExcel($sheet, $data, $header){
         $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'H', 7=>'I', 8=>'J');
+        foreach ($header as $i => $h){
+            $sheet->setCellValue($letters[$i] . '1', $h);
+        }
         foreach ($data as $i => $row){
             $keys = get_object_vars($row);
             foreach ($keys as $j => $k){
@@ -293,13 +296,13 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $p = $_REQUEST['p'];
-        if (isset($from) && isset($to) && isset($to)){
+        //if (isset($from) && isset($to) && isset($to)){
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             switch ($p){
                 case 'credit_card': 
                     $data = $this->_creditCard($from, $to);
-                    $sheet = $this->_dataToExcel($sheet, $data);
+                    $sheet = $this->_dataToExcel($sheet, $data, array('Numero de Tarjeta', 'Tipo de Tarjeta', 'Usuarios unicos'));
                     break;
             }
             $writer = new Xlsx($spreadsheet);
@@ -307,8 +310,8 @@ class FraudController extends AbstractActionController
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
             $writer->save('php://output');
-            exit;
-        }
+            //exit;
+        //}
         
         /*$spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
