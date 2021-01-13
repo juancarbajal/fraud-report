@@ -192,19 +192,50 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql1);
     }
     //Detalle
+    private function sortQueryCalculate(&$sortUrlParam){
+        if (!isset($sortUrlParam)){
+            //Orden por defecto: Primera vez ordenado por fecha asc
+            $sortQuery = 'sort by creationdate asc';
+            $newSortUrlParam = 'date-desc'; //siguiente ordenamiento 
+        } else {
+            switch ($sortUrlParam){
+                case 'date-desc':
+                        $sortQuery = 'sort by creationdate desc';
+                        $newSortUrlParam = 'date-asc';
+                    break;
+                case 'date-asc':
+                        $sortQuery = 'sort by creationdate asc';
+                        $newSortUrlParam = 'date-desc';
+                    break;
+                case 'email-desc':
+                        $sortQuery = 'sort by email desc';
+                        $newSortUrlParam = 'email-asc';
+                    break;
+                case 'email-asc':
+                        $sortQuery = 'sort by email asc';
+                        $newSortUrlParam = 'email-desc';
+                    break;
+            }
+        }
+        $sortUrlParam = $newSortUrlParam;
+        return $sortQuery;
+    }
     public function creditCardDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $card = explode('-', $_REQUEST['card']);
+        $sort = $_REQUEST['sort'];
+        $extras = sortQueryCalculate($sort);
         
-        $data = $this->_creditCardDetail($from, $to, $card);
+        $data = $this->_creditCardDetail($from, $to, $card, $extras);
         return new ViewModel(['data' => $data, 
         'card' => $card,
         'from' => $from,
-        'to' => $to]
+        'to' => $to,
+        'sort' => $sort]
         );
     }
-    private function _creditCardDetail($from, $to, $card){
+    private function _creditCardDetail($from, $to, $card, $extras){
         $sql = "select 
         creationdate
         , orderid
@@ -218,7 +249,7 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
 
