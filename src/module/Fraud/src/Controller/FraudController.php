@@ -223,7 +223,7 @@ class FraudController extends AbstractActionController
         'sortDirection' => $sortDirection]
         );
     }
-    private function _creditCardDetail($from, $to, $card, $extras){
+    private function _creditCardDetail($from, $to, $card, $extras= ''){
         $sql = "select 
         creationdate
         , orderid
