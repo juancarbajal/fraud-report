@@ -16,18 +16,18 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/credit-card'>Tarjeta de Crédito<
               <thead>
                 <tr>
                   <th>Fecha 
-                  <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sort=%s'
+                  <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sf=date&sd=%s'
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
-                            , (isset($this->sort)?$this->sort:'date-desc'))?>'>
+                            , (isset($this->sortDirection)?$this->sortDirection:'desc'))?>'>
                   &udarr;</a></th>
                   <th>Id Orden</th>
-                  <th>Correo <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sort=%s'
+                  <th>Correo <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sf=email&sd=%s'
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
-                            , (isset($this->sort)?$this->sort:'email-desc') )?>'>
+                            , (isset($this->sortDirection)?$this->sortDirection:'desc') )?>'>
                   &udarr;</a></th>
                   <th>Nombre</th>
                   <th>Apellido</th>
