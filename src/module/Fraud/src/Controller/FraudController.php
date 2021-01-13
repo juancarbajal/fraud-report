@@ -200,19 +200,19 @@ class FraudController extends AbstractActionController
         } else {
             switch ($sortUrlParam){
                 case 'date-desc':
-                        $sortQuery = 'sort by creationdate desc';
+                        $sortQuery = 'order by creationdate desc';
                         $newSortUrlParam = 'date-asc';
                     break;
                 case 'date-asc':
-                        $sortQuery = 'sort by creationdate asc';
+                        $sortQuery = 'order by creationdate asc';
                         $newSortUrlParam = 'date-desc';
                     break;
                 case 'email-desc':
-                        $sortQuery = 'sort by email desc';
+                        $sortQuery = 'order by email desc';
                         $newSortUrlParam = 'email-asc';
                     break;
                 case 'email-asc':
-                        $sortQuery = 'sort by email asc';
+                        $sortQuery = 'order by email asc';
                         $newSortUrlParam = 'email-desc';
                     break;
             }
