@@ -246,12 +246,18 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $document = $_REQUEST['document'];
+
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
+
         return new ViewModel(['data' => $this->_documentDetail($from, $to, $document), 
         'document' => $document,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _documentDetail($from, $to, $document){
+    private function _documentDetail($from, $to, $document, $extras= ''){
         $sql = "select 
         creationdate
         , orderid
@@ -265,20 +271,24 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and clientedocument = '$document'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
     public function phoneDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $phone = $_REQUEST['phone'];
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
         
         return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone), 
         'phone' => $phone,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _phoneDetail($from, $to, $phone){
+    private function _phoneDetail($from, $to, $phone , $extras= ''){
         $sql = "select 
         creationdate
         , orderid
@@ -292,20 +302,24 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ". $extras;
         return $this->executeQuery($sql);
     }
     public function addressDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $address = $_REQUEST['address'];
-        
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
+
         return new ViewModel(['data' => $this->_addressDetail($from, $to, $address), 
         'address' => $address,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _addressDetail($form, $to, $address) {
+    private function _addressDetail($form, $to, $address, $extras= '') {
         $sql = "select 
         creationdate
         , orderid
@@ -319,7 +333,7 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and concat(city, ', ', street, ' ', number) = '$address'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
     private function _dataToExcel(&$sheet, $data, $header){
