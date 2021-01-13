@@ -5,7 +5,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FraudController extends AbstractActionController
 {
@@ -358,7 +358,7 @@ class FraudController extends AbstractActionController
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             //$sheet->setCellValue("A1", 'Hola mundo');
-            $extension = '.csv';
+            $extension = '.xls';
             $filename = 'export' . $extension;
             $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs');
             switch ($p){
@@ -403,7 +403,7 @@ class FraudController extends AbstractActionController
                         $filename = 'address_' . $from . '_' . $to . '_' . md5($_REQUEST['address']) . $extension;
                     break;
             }
-            $writer = new Csv($spreadsheet);
+            $writer = new Xls($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'. $filename .'"');
