@@ -249,9 +249,9 @@ class FraudController extends AbstractActionController
 
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
-        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
 
-        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document), 
+        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document, $extras), 
         'document' => $document,
         'from' => $from,
         'to' => $to,
@@ -280,9 +280,9 @@ class FraudController extends AbstractActionController
         $phone = $_REQUEST['phone'];
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
-        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
         
-        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone), 
+        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone, $extras), 
         'phone' => $phone,
         'from' => $from,
         'to' => $to,
@@ -311,9 +311,9 @@ class FraudController extends AbstractActionController
         $address = $_REQUEST['address'];
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
-        $extras = $this->_sortQueryCalculate($sortField, $sortDirection, $extras);
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
 
-        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address), 
+        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address, $extras), 
         'address' => $address,
         'from' => $from,
         'to' => $to,
