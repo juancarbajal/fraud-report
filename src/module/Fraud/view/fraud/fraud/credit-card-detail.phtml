@@ -20,14 +20,14 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/credit-card'>Tarjeta de Crédito<
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
-                            , $this->sort )?>'>
+                            , (isset($this->sort)?$this->sort:'date-desc'))?>'>
                   &udarr;</a></th>
                   <th>Id Orden</th>
                   <th>Correo <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sort=%s'
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
-                            , $this->sort )?>'>
+                            , (isset($this->sort)?$this->sort:'email-desc') )?>'>
                   &udarr;</a></th>
                   <th>Nombre</th>
                   <th>Apellido</th>
