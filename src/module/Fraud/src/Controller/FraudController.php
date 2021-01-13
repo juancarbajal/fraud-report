@@ -192,7 +192,7 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql1);
     }
     //Detalle
-    private function sortQueryCalculate(&$sortUrlParam){
+    private function _sortQueryCalculate(&$sortUrlParam){
         if (!isset($sortUrlParam)){
             //Orden por defecto: Primera vez ordenado por fecha asc
             $sortQuery = 'sort by creationdate asc';
@@ -225,7 +225,7 @@ class FraudController extends AbstractActionController
         $to = $_REQUEST['to'];
         $card = explode('-', $_REQUEST['card']);
         $sort = $_REQUEST['sort'];
-        $extras = sortQueryCalculate($sort);
+        $extras = $this->_sortQueryCalculate($sort);
         
         $data = $this->_creditCardDetail($from, $to, $card, $extras);
         return new ViewModel(['data' => $data, 
