@@ -195,7 +195,7 @@ class FraudController extends AbstractActionController
     private function _sortQueryCalculate(&$sortUrlParam){
         if (!isset($sortUrlParam)){
             //Orden por defecto: Primera vez ordenado por fecha asc
-            $sortQuery = 'sort by creationdate asc';
+            $sortQuery = 'order by creationdate asc';
             $newSortUrlParam = 'date-desc'; //siguiente ordenamiento 
         } else {
             switch ($sortUrlParam){
@@ -250,7 +250,6 @@ class FraudController extends AbstractActionController
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
-        echo $sql; exit;
         return $this->executeQuery($sql);
     }
 
