@@ -250,6 +250,7 @@ class FraudController extends AbstractActionController
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
+        echo $sql; exit;
         return $this->executeQuery($sql);
     }
 
