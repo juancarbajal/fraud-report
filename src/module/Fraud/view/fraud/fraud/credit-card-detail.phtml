@@ -16,14 +16,14 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/credit-card'>Tarjeta de Crédito<
               <thead>
                 <tr>
                   <th>Fecha 
-                  <a href='<?=sprintf('/fraud/credit-card-detail/from=%s&to=%s&card=%s&sort=%s'
+                  <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sort=%s'
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
                             , $this->sort )?>'>
                   &udarr;</a></th>
                   <th>Id Orden</th>
-                  <th>Correo <a href='<?=sprintf('/fraud/credit-card-detail/from=%s&to=%s&card=%s&sort=%s'
+                  <th>Correo <a href='<?=sprintf('/fraud/credit-card-detail?from=%s&to=%s&card=%s&sort=%s'
                             ,$this->from
                             , $this->to
                             , $this->card[0] . '-' . $this->card[1]
