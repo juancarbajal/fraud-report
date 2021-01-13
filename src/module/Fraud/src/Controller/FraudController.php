@@ -5,7 +5,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Csv;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FraudController extends AbstractActionController
 {
@@ -192,19 +192,38 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql1);
     }
     //Detalle
+    private function _sortQueryCalculate($sortField, &$sortDirection){
+        if (!isset($sortDirection) && !isset($sortField)){
+            //Orden por defecto: Primera vez ordenado por fecha asc
+            $sortQuery = 'order by creationdate asc';
+            $sortDirection = 'desc'; //siguiente ordenamiento 
+        } else {
+            if ($sortField == 'date'){
+                $sortQuery = ($sortDirection == 'desc')? 'order by creationdate desc': 'order by creationdate asc';
+            } else {
+                $sortQuery = ($sortDirection == 'desc')? 'order by email desc': 'order by email asc';
+            }
+            $sortDirection = ($sortDirection == 'asc')?'desc':'asc';
+        }
+        return $sortQuery;
+    }
     public function creditCardDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $card = explode('-', $_REQUEST['card']);
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
         
-        $data = $this->_creditCardDetail($from, $to, $card);
+        $data = $this->_creditCardDetail($from, $to, $card, $extras);
         return new ViewModel(['data' => $data, 
         'card' => $card,
         'from' => $from,
-        'to' => $to]
+        'to' => $to,
+        'sortDirection' => $sortDirection]
         );
     }
-    private function _creditCardDetail($from, $to, $card){
+    private function _creditCardDetail($from, $to, $card, $extras= ''){
         $sql = "select 
         creationdate
         , orderid
@@ -218,7 +237,8 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
+        
         return $this->executeQuery($sql);
     }
 
@@ -226,12 +246,18 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $document = $_REQUEST['document'];
-        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document), 
+
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
+
+        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document, $extras), 
         'document' => $document,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _documentDetail($from, $to, $document){
+    private function _documentDetail($from, $to, $document, $extras= ''){
         $sql = "select 
         creationdate
         , orderid
@@ -245,20 +271,24 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and clientedocument = '$document'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
     public function phoneDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $phone = $_REQUEST['phone'];
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
         
-        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone), 
+        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone, $extras), 
         'phone' => $phone,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _phoneDetail($from, $to, $phone){
+    private function _phoneDetail($from, $to, $phone , $extras= ''){
         $sql = "select 
         creationdate
         , orderid
@@ -272,20 +302,24 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ". $extras;
         return $this->executeQuery($sql);
     }
     public function addressDetailAction() {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $address = $_REQUEST['address'];
-        
-        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address), 
+        $sortField = $_REQUEST['sf'];
+        $sortDirection = $_REQUEST['sd'];
+        $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
+
+        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address, $extras), 
         'address' => $address,
         'from' => $from,
-        'to' => $to]);
+        'to' => $to,
+        'sortDirection' => $sortDirection]);
     }
-    private function _addressDetail($form, $to, $address) {
+    private function _addressDetail($form, $to, $address, $extras= '') {
         $sql = "select 
         creationdate
         , orderid
@@ -299,12 +333,11 @@ class FraudController extends AbstractActionController
         where creationdate BETWEEN '$from' and '$to'
         and concat(city, ', ', street, ' ', number) = '$address'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ";
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
     private function _dataToExcel(&$sheet, $data, $header){
         $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'G', 7=>'H', 8=>'I', 8=>'J');
-
         foreach ($header as $i => $h){
             $sheet->setCellValue($letters[$i] . '1', $h);
         }
@@ -325,7 +358,7 @@ class FraudController extends AbstractActionController
             $spreadsheet = new Spreadsheet();
             $sheet = $spreadsheet->getActiveSheet();
             //$sheet->setCellValue("A1", 'Hola mundo');
-            $extension = '.csv';
+            $extension = '.xls';
             $filename = 'export' . $extension;
             $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs');
             switch ($p){
@@ -370,7 +403,7 @@ class FraudController extends AbstractActionController
                         $filename = 'address_' . $from . '_' . $to . '_' . md5($_REQUEST['address']) . $extension;
                     break;
             }
-            $writer = new Csv($spreadsheet);
+            $writer = new Xls($spreadsheet);
             //$writer->save('hello world.xlsx');
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="'. $filename .'"');

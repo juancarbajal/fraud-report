@@ -7,15 +7,7 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/phone'>Teléfono</a>
           <div class="container form">
             <div class="row justify-content-end">
               <div class="col col-md-auto">
-                <a href='/fraud/export-excel?p=phone-detail&from=<?=$this->from?>&to=<?=$this->to?>&phone=<?=$this->phone?>'>Exportar a Excel</a> |
-
-                <label for="sortby" class="form-label">Ordenar por</label>
-                <select class="form-select" id="sortby" required>
-                  <option value="">---</option>
-                  <option value="email">Correo</option>
-                  <option value="nombre">Nombre</option>
-                  <option value="apellido">Apellido</option>
-                </select>
+                <a href='/fraud/export-excel?p=phone-detail&from=<?=$this->from?>&to=<?=$this->to?>&phone=<?=$this->phone?>'>Exportar a Excel</a>
               </div>
             </div>
           </div>
@@ -24,9 +16,20 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/phone'>Teléfono</a>
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th>Fecha</th>
+                  <th>Fecha 
+                  <a href='<?=sprintf('/fraud/phone-detail?from=%s&to=%s&phone=%s&sf=date&sd=%s'
+                            ,$this->from
+                            , $this->to
+                            , $this->phone
+                            , (isset($this->sortDirection)?$this->sortDirection:'desc'))?>'>
+                  &udarr;</a></th>
                   <th>Id Orden</th>
-                  <th>Correo</th>
+                  <th>Correo <a href='<?=sprintf('/fraud/phone-detail?from=%s&to=%s&phone=%s&sf=email&sd=%s'
+                            ,$this->from
+                            , $this->to
+                            , $this->phone
+                            , (isset($this->sortDirection)?$this->sortDirection:'desc') )?>'>
+                  &udarr;</a></th>
                   <th>Nombre</th>
                   <th>Apellido</th>
                   <th>Monto</th>
