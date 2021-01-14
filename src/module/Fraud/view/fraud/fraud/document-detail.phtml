@@ -35,6 +35,7 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/document'>Documento</a>
                   <th>Monto</th>
                   <th>Cant. SKUs</th>
                   <th>Total SKUs</th>
+                  <th>Dirección</th>
                 </tr>
               </thead>
               <tbody>
@@ -48,6 +49,7 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/document'>Documento</a>
                   <td><?=$row->totalvalue?></td>
                   <td><?=$row->cantsku?></td>
                   <td><?=$row->totalsku?></td>
+                  <td><?=substr($row->address,0,30)?>...</td>
                 </tr>
             <?php }?>
                 

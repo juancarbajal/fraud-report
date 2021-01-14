@@ -267,12 +267,13 @@ class FraudController extends AbstractActionController
         , clientelastname
         , totalvalue
         , count(skuquantity) as cantsku
-        , sum(skuquantity) as totalsku 
+        , sum(skuquantity) as totalsku
+        , concat(street, ' ', number) as address 
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and clientedocument = '$document'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, concat(street, ' ', number) " . $extras;
         return $this->executeQuery($sql);
     }
     public function phoneDetailAction() {
@@ -299,12 +300,12 @@ class FraudController extends AbstractActionController
         , totalvalue
         , count(skuquantity) as cantsku
         , sum(skuquantity) as totalsku
-        , substring(concat(street, ' ', number),1,30) as address 
+        , concat(street, ' ', number) as address
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue , substring(concat(street, ' ', number),1,30) ". $extras;
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, concat(street, ' ', number) ". $extras;
         return $this->executeQuery($sql);
     }
     public function addressDetailAction() {
