@@ -63,7 +63,7 @@ class FraudController extends AbstractActionController
             $data[$i]->nro = $i+1;
             $legend["$row->cnt"] = (!isset($legend["$row->cnt"]))?1:$legend["$row->cnt"]+1; 
         }
-        arsort($legend);
+        //arsort($legend);
         return $legend;
     }
     public function creditCardAction()
