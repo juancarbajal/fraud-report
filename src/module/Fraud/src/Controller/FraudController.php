@@ -356,7 +356,10 @@ class FraudController extends AbstractActionController
         }
         foreach ($data as $i => $row){
             $keys = array_keys(get_object_vars($row));
-            if ($options['number'] == true) array_shift($keys, '#');
+            if ($options['number'] == true){
+                array_shift($keys, 'nro');
+                array_pop($keys);
+            } 
             foreach ($keys as $j => $k){
                 $sheet->setCellValue($letters[$j] . ($i+2), $row->$k);
             }
