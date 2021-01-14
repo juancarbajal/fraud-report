@@ -33,6 +33,7 @@ Ir a: <a href='/'>Inicio</a>
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
+                  <th>#</th>
                   <th>Direcci&oacute;n<fono</th>
                   <th>Usuarios únicos</th>
                   <th>Opciones</th>
@@ -41,6 +42,7 @@ Ir a: <a href='/'>Inicio</a>
               <tbody>
               <?php foreach($this->data as $row) {?>
                 <tr>
+                  <td><?=$row->nro?></td>
                   <td><?=$row->street_total?></td>
                   <td><?=$row->cnt?></td>
                   <td><a href='/fraud/address-detail?from=<?=$this->from?>&to=<?=$this->to?>&address=<?=$row->street_total?>'>Revisar</a></td>
