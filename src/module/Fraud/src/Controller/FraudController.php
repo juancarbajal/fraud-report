@@ -109,9 +109,13 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            return new ViewModel(['data' => $this->_document($from, $to),
+            $data = $this->_document($from, $to);
+            $legend = $this->_calculateLegend($data);
+
+            return new ViewModel(['data' => $data,
             'from' => $from,
-            'to' => $to]);
+            'to' => $to,
+            'legend' => $legend]);
  
         }
         else 
@@ -140,9 +144,13 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            return new ViewModel(['data' => $this->_phone($from, $to),
+            $data = $this->_phone($from, $to);
+            $legend = $this->_calculateLegend($data);
+
+            return new ViewModel(['data' => $data,
             'from' => $from,
-            'to' => $to]);
+            'to' => $to,
+            'legend' => $legend]);
  
         }
         else 
@@ -172,9 +180,12 @@ class FraudController extends AbstractActionController
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
-            return new ViewModel(['data' => $this->_address($from, $to),
+            $data = $this->_address($from, $to);
+            $legend = $this->_calculateLegend($data);
+            return new ViewModel(['data' => $data,
             'from' => $from,
-            'to' => $to]);
+            'to' => $to,
+            'legend' => $legend]);
  
         }
         else 
@@ -387,17 +398,20 @@ class FraudController extends AbstractActionController
                     break;
                 case 'document':
                     $data = $this->_document($from, $to);
-                    $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'));
+                    $this->_calculateLegend($data);
+                    $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'), array('number' => true));
                     $filename = 'document_' . $from . '_' . $to . $extension;
                     break;
                 case 'phone':
                         $data = $this->_phone($from, $to);
-                        $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'));
+                        $this->_calculateLegend($data);
+                        $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'phone_' . $from . '_' . $to . $extension;
                     break;
                 case 'address':
                         $data = $this->_address($from, $to);
-                        $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'));
+                        $this->_calculateLegend($data);
+                        $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'address_' . $from . '_' . $to . $extension;
                     break;
                 case 'credit-card-detail':
