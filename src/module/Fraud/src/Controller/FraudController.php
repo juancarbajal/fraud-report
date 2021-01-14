@@ -377,7 +377,8 @@ class FraudController extends AbstractActionController
             switch ($p){
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
-                    $this->_dataToExcel($sheet, $data, array('Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'));
+                    $this->_calculateLegend($data);
+                    $this->_dataToExcel($sheet, $data, array('#', 'Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'));
                     $filename = 'credit_card_' . $from . '_' . $to . $extension;
                     break;
                 case 'document':
