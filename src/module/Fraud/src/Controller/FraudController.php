@@ -349,13 +349,14 @@ class FraudController extends AbstractActionController
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
-    private function _dataToExcel(&$sheet, $data, $header){
+    private function _dataToExcel(&$sheet, $data, $header, $options = array()){
         $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'G', 7=>'H', 8=>'I', 9=>'J', 10 =>'K');
         foreach ($header as $i => $h){
             $sheet->setCellValue($letters[$i] . '1', $h);
         }
         foreach ($data as $i => $row){
             $keys = array_keys(get_object_vars($row));
+            if ($options['number'] == true) array_shift($keys, '#');
             foreach ($keys as $j => $k){
                 $sheet->setCellValue($letters[$j] . ($i+2), $row->$k);
             }
@@ -378,7 +379,7 @@ class FraudController extends AbstractActionController
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
                     $this->_calculateLegend($data);
-                    $this->_dataToExcel($sheet, $data, array('#', 'Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'));
+                    $this->_dataToExcel($sheet, $data, array('#', 'Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'), array('number' => true));
                     $filename = 'credit_card_' . $from . '_' . $to . $extension;
                     break;
                 case 'document':
