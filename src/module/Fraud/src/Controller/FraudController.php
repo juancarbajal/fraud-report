@@ -57,16 +57,26 @@ class FraudController extends AbstractActionController
     {
         return new ViewModel();
     }
-
+    private function _calculateLegend(&$data){
+        $legend = array();
+        foreach($data as $i => $row){
+            $data[$i]->nro = $i;
+            $legend["$row->cnt"] = (!isset($legend["$row->cnt"]))?1:$legend["$row->cnt"]+1; 
+        }
+        arsort($legend);
+        return $legend;
+    }
     public function creditCardAction()
     {
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
+        $data = $this->_creditCard($from, $to);
+        $legend = $this->_calculateLegend($data);
         if (isset($from) && isset($to)){
-            return new ViewModel(['data' => $this->_creditCard($from, $to),
+            return new ViewModel(['data' => $data,
             'from' => $from,
-            'to' => $to]);
- 
+            'to' => $to,
+            'legend' => $legend ]);
         }
         else 
             return new ViewModel();
