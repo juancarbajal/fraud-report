@@ -399,19 +399,19 @@ class FraudController extends AbstractActionController
                 case 'document':
                     $data = $this->_document($from, $to);
                     $this->_calculateLegend($data);
-                    $this->_dataToExcel($sheet, $data, array('Documento de identidad', 'Usuarios únicos'), array('number' => true));
+                    $this->_dataToExcel($sheet, $data, array('#', 'Documento de identidad', 'Usuarios únicos'), array('number' => true));
                     $filename = 'document_' . $from . '_' . $to . $extension;
                     break;
                 case 'phone':
                         $data = $this->_phone($from, $to);
                         $this->_calculateLegend($data);
-                        $this->_dataToExcel($sheet, $data, array('Télefono' , 'Usuarios únicos'), array('number' => true));
+                        $this->_dataToExcel($sheet, $data, array('#', 'Télefono' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'phone_' . $from . '_' . $to . $extension;
                     break;
                 case 'address':
                         $data = $this->_address($from, $to);
                         $this->_calculateLegend($data);
-                        $this->_dataToExcel($sheet, $data, array('Dirección' , 'Usuarios únicos'), array('number' => true));
+                        $this->_dataToExcel($sheet, $data, array('#', 'Dirección' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'address_' . $from . '_' . $to . $extension;
                     break;
                 case 'credit-card-detail':
