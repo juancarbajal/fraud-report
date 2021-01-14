@@ -233,11 +233,12 @@ class FraudController extends AbstractActionController
         , totalvalue
         , count(skuquantity) as cantsku
         , sum(skuquantity) as totalsku 
+        , substring(concat(street, ' ', number),1,30) as address 
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, substring(concat(street, ' ', number),1,30) " . $extras;
         
         return $this->executeQuery($sql);
     }
@@ -297,12 +298,13 @@ class FraudController extends AbstractActionController
         , clientelastname
         , totalvalue
         , count(skuquantity) as cantsku
-        , sum(skuquantity) as totalsku 
+        , sum(skuquantity) as totalsku
+        , substring(concat(street, ' ', number),1,30) as address 
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
         and status='Preparando Entrega'
-        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue ". $extras;
+        group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue , substring(concat(street, ' ', number),1,30) ". $extras;
         return $this->executeQuery($sql);
     }
     public function addressDetailAction() {
@@ -360,7 +362,7 @@ class FraudController extends AbstractActionController
             //$sheet->setCellValue("A1", 'Hola mundo');
             $extension = '.xls';
             $filename = 'export' . $extension;
-            $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs');
+            $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs', 'Dirección');
             switch ($p){
                 case 'credit-card': 
                     $data = $this->_creditCard($from, $to);
