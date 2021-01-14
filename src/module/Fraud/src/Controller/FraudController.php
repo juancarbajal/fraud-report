@@ -60,7 +60,7 @@ class FraudController extends AbstractActionController
     private function _calculateLegend(&$data){
         $legend = array();
         foreach($data as $i => $row){
-            $data[$i]->nro = $i;
+            $data[$i]->nro = $i+1;
             $legend["$row->cnt"] = (!isset($legend["$row->cnt"]))?1:$legend["$row->cnt"]+1; 
         }
         arsort($legend);
