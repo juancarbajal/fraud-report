@@ -339,7 +339,7 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql);
     }
     private function _dataToExcel(&$sheet, $data, $header){
-        $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'G', 7=>'H', 8=>'I', 8=>'J');
+        $letters = array(0=>'A', 1=>'B', 2=>'C', 3=>'D', 4=>'E', 5=>'F', 6=>'G', 7=>'H', 8=>'I', 9=>'J', 10 =>'K');
         foreach ($header as $i => $h){
             $sheet->setCellValue($letters[$i] . '1', $h);
         }
