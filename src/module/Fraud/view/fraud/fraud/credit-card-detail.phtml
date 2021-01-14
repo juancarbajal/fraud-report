@@ -48,7 +48,7 @@ Ir a: <a href='/'>Inicio</a> > <a href='/fraud/credit-card'>Tarjeta de Crédito<
                   <td><?=$row->totalvalue?></td>
                   <td><?=$row->cantsku?></td>
                   <td><?=$row->totalsku?></td>
-                  <td><?=$row->address?></td>
+                  <td><?=substr($row->address,0,30)?>...</td>
                 </tr>
             <?php }?>
                 
