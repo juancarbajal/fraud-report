@@ -4,26 +4,20 @@ namespace Fraud\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
+//use Laminas\Config\Config;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FraudController extends AbstractActionController
 {
     private function getDatabase(){
-        //$link = \mssql_connect('sugoServer', 'admin', 'A8WYS9q2*z');
-        $serverName = "prod-sugo-apps.cjefewagaayr.us-east-1.rds.amazonaws.com";
+        $config = new Laminas\Config\Config(include $APPLICATION_PATH . '/config/fraud.config.php');
+        $serverName = $config->fraud->database->host;
         $connectionOptions = array(
-            "Database" => "db-sugo-vtext-01",
-            "Uid" => "admin",
-            "PWD" => "A8WYS9q2*z"
-        );
-
-        $serverName = "prod-sugo-apps2.cjefewagaayr.us-east-1.rds.amazonaws.com";
-        $connectionOptions = array(
-            "Database" => "db-sugo-vtext-02",
-            "Uid" => "admin",
-            "PWD" => "y8WgS7q2*z"
-        );        
+            "Database" => $config->fraud->database->dbname,
+            "Uid" => $config->fraud->database->user,
+            "PWD" => $config->fraud->database->pass
+        );     
         $link = sqlsrv_connect($serverName,$connectionOptions);
             return $link;
 

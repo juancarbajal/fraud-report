@@ -6,3 +6,4 @@ data/cache/*
 phpunit.xml
 .phpunit.result.cache
 ../composer.lock
+config/fraud.config.php

@@ -1,0 +1,11 @@
+<?php
+return [
+    'fraud'=> [
+        'database' => [
+            'host' => '',
+            'dbname' =>'',
+            'user' => '',
+            'pass' => '',
+        ]
+    ]
+];
