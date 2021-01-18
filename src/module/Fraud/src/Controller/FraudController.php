@@ -11,6 +11,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 class FraudController extends AbstractActionController
 {
     private function getDatabase(){
+        echo $APPLICATION_PATH; die;
         $config = new Config(include $APPLICATION_PATH . '/config/fraud.config.php');
         $serverName = $config->fraud->database->host;
         $connectionOptions = array(
