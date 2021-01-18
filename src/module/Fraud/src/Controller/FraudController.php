@@ -4,14 +4,14 @@ namespace Fraud\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Laminas\Db\Adapter\Adapter;
-//use Laminas\Config\Config;
+use Laminas\Config\Config;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FraudController extends AbstractActionController
 {
     private function getDatabase(){
-        $config = new Laminas\Config\Config(include $APPLICATION_PATH . '/config/fraud.config.php');
+        $config = new Config(include $APPLICATION_PATH . '/config/fraud.config.php');
         $serverName = $config->fraud->database->host;
         $connectionOptions = array(
             "Database" => $config->fraud->database->dbname,
