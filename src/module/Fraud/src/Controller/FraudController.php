@@ -89,7 +89,7 @@ class FraudController extends AbstractActionController
                 , lastdigits
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
-                and status='Preparando Entrega'
+                and charindex('handling',status)>0
             ) as m 
             group by paymentsystemname
             , cardfirstdigits
@@ -126,7 +126,7 @@ class FraudController extends AbstractActionController
                 , clientedocument
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
-                and status='Preparando Entrega'
+                and charindex('handling',status)>0
             ) as m 
             group by clientedocument
             having count(1)>1
@@ -162,7 +162,7 @@ class FraudController extends AbstractActionController
                 , replace(phone, '+51', '') as phone
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
-                and status='Preparando Entrega'
+                and charindex('handling',status)>0
             ) as m 
             group by phone
             having count(1)>1
@@ -199,7 +199,7 @@ class FraudController extends AbstractActionController
             , number
             from ordenes
             where creationdate BETWEEN '$from' and '$to'
-            and status='Preparando Entrega'
+            and charindex('handling',status)>0
         ) as m 
         group by street_total
         having count(1)>1
@@ -252,7 +252,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and cardfirstdigits = '$card[0]' and lastdigits = '$card[1]'
-        and status='Preparando Entrega'
+        and charindex('handling',status)>0
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, concat(street, ' ', number) " . $extras;
         
         return $this->executeQuery($sql);
@@ -287,7 +287,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and clientedocument = '$document'
-        and status='Preparando Entrega'
+        and charindex('handling',status)>0
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, concat(street, ' ', number) " . $extras;
         return $this->executeQuery($sql);
     }
@@ -319,7 +319,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and phone like '%$phone'
-        and status='Preparando Entrega'
+        and charindex('handling',status)>0
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue, concat(street, ' ', number) ". $extras;
         return $this->executeQuery($sql);
     }
@@ -350,7 +350,7 @@ class FraudController extends AbstractActionController
         from ordenes 
         where creationdate BETWEEN '$from' and '$to'
         and concat(city, ', ', street, ' ', number) = '$address'
-        and status='Preparando Entrega'
+        and charindex('handling',status)>0
         group by orderid, creationdate, email, clientefirstname, clientelastname, totalvalue " . $extras;
         return $this->executeQuery($sql);
     }
