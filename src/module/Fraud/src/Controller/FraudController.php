@@ -20,7 +20,7 @@ class FraudController extends AbstractActionController
         }
     }
     private function getDatabase(){
-        /*
+        
         $config = new Config(include APPLICATION_PATH . '/config/fraud.config.php');
         $serverName = $config->fraud->database->host;
         $connectionOptions = array(
@@ -30,11 +30,11 @@ class FraudController extends AbstractActionController
         );     
         $link = sqlsrv_connect($serverName,$connectionOptions);
             return $link;
-        */
+        
     }
 
     private function executeQuery($query){
-        /*
+        
         $db = $this->getDatabase();
             
         if( $db === false ) {
@@ -56,7 +56,7 @@ class FraudController extends AbstractActionController
         }
         sqlsrv_close($db);
         return $data;
-        */
+        
     }
 
     public function indexAction()

@@ -1,3 +1,5 @@
 src/composer.lock
 composer.lock
 vendor
+data/security.db3
+src/data/security.db3
