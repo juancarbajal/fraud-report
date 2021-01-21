@@ -10,7 +10,17 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 
 class FraudController extends AbstractActionController
 {
+    function _validateAccess(){
+        if (isset($_SESSION['user']) && ($_SESSION['user']!='')){
+            return true; 
+        }
+        else {
+            $this->redirect()->toUrl('/');
+            return false;
+        }
+    }
     private function getDatabase(){
+        /*
         $config = new Config(include APPLICATION_PATH . '/config/fraud.config.php');
         $serverName = $config->fraud->database->host;
         $connectionOptions = array(
@@ -20,10 +30,11 @@ class FraudController extends AbstractActionController
         );     
         $link = sqlsrv_connect($serverName,$connectionOptions);
             return $link;
-
+        */
     }
 
     private function executeQuery($query){
+        /*
         $db = $this->getDatabase();
             
         if( $db === false ) {
@@ -45,10 +56,12 @@ class FraudController extends AbstractActionController
         }
         sqlsrv_close($db);
         return $data;
+        */
     }
 
     public function indexAction()
     {
+        $this->_validateAccess();
         return new ViewModel();
     }
     private function _calculateLegend(&$data){
@@ -62,6 +75,7 @@ class FraudController extends AbstractActionController
     }
     public function creditCardAction()
     {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $data = $this->_creditCard($from, $to);
@@ -100,6 +114,7 @@ class FraudController extends AbstractActionController
     }
     public function documentAction()
     {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
@@ -135,6 +150,7 @@ class FraudController extends AbstractActionController
     }
     public function phoneAction()
     {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
@@ -171,6 +187,7 @@ class FraudController extends AbstractActionController
     }
     public function addressAction()
     {   
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         if (isset($from) && isset($to)){
@@ -223,6 +240,7 @@ class FraudController extends AbstractActionController
         return $sortQuery;
     }
     public function creditCardDetailAction() {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $card = explode('-', $_REQUEST['card']);
@@ -259,6 +277,7 @@ class FraudController extends AbstractActionController
     }
 
     public function documentDetailAction() {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $document = $_REQUEST['document'];
@@ -292,6 +311,7 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql);
     }
     public function phoneDetailAction() {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $phone = $_REQUEST['phone'];
@@ -324,6 +344,7 @@ class FraudController extends AbstractActionController
         return $this->executeQuery($sql);
     }
     public function addressDetailAction() {
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $address = $_REQUEST['address'];
@@ -372,7 +393,7 @@ class FraudController extends AbstractActionController
         //return $sheet;
     }
     public function exportExcelAction(){
-
+        $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
         $p = $_REQUEST['p'];

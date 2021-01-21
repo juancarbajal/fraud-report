@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
+session_start();
 
 if ($_SERVER['APPLICATION_ENV'] === 'development') {
     error_reporting(E_ALL && ~E_NOTICE);

@@ -19,4 +19,27 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
+    public function loginAction(){
+        $user = $_REQUEST['user'];
+        $pass = $_REQUEST['pass'];
+        if (isset($user) && isset($pass)){
+            if (($user == 'admin') && ($pass == '123')){
+                session_start();
+                $_SESSION['user'] = $user;
+                $this->redirect()->toUrl('/fraud');
+            }
+            else 
+                $this->redirect()->toUrl('/');
+        } else $this->redirect()->toUrl('/');
+        
+    }
+
+    public function logoutAction(){
+        //session_unset();
+        $_SESSION['user'] = '';
+        $_SESSION['user'] = null;
+        //session_destroy();
+
+        $this->redirect()->toUrl('/');
+    }
 }

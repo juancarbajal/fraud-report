@@ -46,7 +46,16 @@
     </head>
     <body>
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 main-yellow border-bottom shadow-sm" >
-            <h5 class="my-0 mr-md-auto font-weight-bold">SUGO | Revisión de fraudes</h5>    
+            <h5 class="my-0 mr-md-auto font-weight-bold">SUGO | Revisión de fraudes</h5>  
+
+            <div class="row justify-content-end">
+              <div class="col col-md-auto">
+              <?php if (isset($_SESSION['user']) && ($_SESSION['user']!='')){?>
+                    <a href='/application/logout'>Salir</a>
+                <?php }?>
+              </div>
+            </div>
+    
         </div>  
                
         <main class="container">
