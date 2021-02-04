@@ -70,7 +70,7 @@ class FraudController extends AbstractActionController
             $data[$i]->nro = $i+1;
             $id = $row->cnt;
             $legend["$id"]['cnt'] = (!isset($legend["$id"]['cnt']))?1:$legend["$id"]['cnt']+1; 
-            $legend["$id"]['total'] = (!isset($legend["$id"]['total']))?0:$legend["$id"]['total']+$row->total; 
+            $legend["$id"]['total'] += (!isset($legend["$id"]['total']))?0:$row->total; 
         }
         //arsort($legend);
         return $legend;
