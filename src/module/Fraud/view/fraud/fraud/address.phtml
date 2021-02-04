@@ -2,11 +2,10 @@
 Ir a: <a href='/fraud'>Inicio</a>
 </div>
 <h4>Dirección</h4>
-
 <?= $this->partial('layout/search-form.phtml', []); ?>
 <?php if (isset($this->data)) {?>
         <h5>Resumen</h5>
-        <div class="table-responsive">
+        <div class="table-responsive" style='align:center; text-align:center'>
             <table class="table table-striped table-sm" style='width:50%'>
             <thead>
                 <tr>
@@ -31,7 +30,7 @@ Ir a: <a href='/fraud'>Inicio</a>
             </tbody>
             <tfoot>
               <tr>
-                <td style='text-align:right'>Totales</td>
+                <td style='text-align:right'><b>Totales:</b></td>
                 <td style='text-align:right'><?=number_format($sumTotal,2)?></td>
                 <td style='text-align:right'><?=$sumCnt?></td>
               </tr>
