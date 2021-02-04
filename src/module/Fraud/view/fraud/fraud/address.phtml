@@ -11,16 +11,31 @@ Ir a: <a href='/fraud'>Inicio</a>
             <thead>
                 <tr>
                   <th>Usuarios Únicos</th>
+                  <th>Monto total en transacciones</th>
                   <th>#<th>
                 </tr>
               </thead>
             <tbody>
+            <?php $sumTotal = 0; $sumCnt = 0;?>
             <?php foreach($this->legend as $key => $value){?>
               <tr>
-                <td><?=$key?></td><td><?=$value?></td>
+                <td><?=$key?></td>
+                <td><?=$value['total']?></td>
+                <td><?=$value['cnt']?></td>
               </tr>
+              <?php 
+                $sumTotal += $value['total'];
+                $sumCnt += $value['cnt'];
+              ?> 
             <?php }?>
             </tbody>
+            <tfoot>
+              <tr>
+                <td>totales</td>
+                <td><?=$sumTotal?></td>
+                <td><?=$sumCnt?></td>
+              </tr>
+            </tfoot>
             </table>
         </div>
 

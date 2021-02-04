@@ -68,7 +68,9 @@ class FraudController extends AbstractActionController
         $legend = array();
         foreach($data as $i => $row){
             $data[$i]->nro = $i+1;
-            $legend["$row->cnt"] = (!isset($legend["$row->cnt"]))?1:$legend["$row->cnt"]+1; 
+            $id = "$row->cnt";
+            $legend[$id]['cnt'] = (!isset($legend[$id]['cnt']))?1:$legend[$id]['cnt']+1; 
+            $legend[$id]['total'] = (!isset($legend[$id]['total']))?0:$legend[$id]['total']+$row->total; 
         }
         //arsort($legend);
         return $legend;
@@ -93,6 +95,7 @@ class FraudController extends AbstractActionController
         $sql1 = "select 
             concat(cardfirstdigits, '-', lastdigits) as card
             , paymentsystemname
+            , sum(totalvalue) as total
             , count(1) as cnt
             from 
             (
@@ -101,6 +104,7 @@ class FraudController extends AbstractActionController
                 , paymentsystemname
                 , cardfirstdigits
                 , lastdigits
+                , totalvalue
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
                 and charindex('handling',status)>0
@@ -133,12 +137,14 @@ class FraudController extends AbstractActionController
     private function  _document($from, $to){
         $sql1 = "select 
             clientedocument
+            , sum(totalvalue) as total
             , count(1) as cnt
             from 
             (
                 select 
                 distinct(email)
                 , clientedocument
+                , totalvalue
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
                 and charindex('handling',status)>0
@@ -170,12 +176,14 @@ class FraudController extends AbstractActionController
     private function _phone($from, $to){
         $sql1 = "select 
             phone
+            , sum(totalvalue) as total
             , count(1) as cnt
             from 
             (
                 select 
                 distinct(email)
                 , replace(phone, '+51', '') as phone
+                , totalvalue
                 from ordenes
                 where creationdate BETWEEN '$from' and '$to'
                 and charindex('handling',status)>0
@@ -206,6 +214,7 @@ class FraudController extends AbstractActionController
     private function _address($from, $to){
         $sql1 = "select 
         street_total
+        , sum(totalvalue) as total
         , count(1) as cnt
         from 
         (
@@ -214,6 +223,7 @@ class FraudController extends AbstractActionController
             , addresstype
             , concat(city, ', ', street, ' ', number) as street_total
             , number
+            , totalvalue
             from ordenes
             where creationdate BETWEEN '$from' and '$to'
             and charindex('handling',status)>0
