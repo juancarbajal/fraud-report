@@ -20,7 +20,7 @@ Ir a: <a href='/fraud'>Inicio</a>
             <?php foreach($this->legend as $key => $value){?>
               <tr>
                 <td><?=$key?></td>
-                <td style='text-align:right'><?=number_format(value['total'],2)?></td>
+                <td style='text-align:right'><?=number_format($value['total'],2)?></td>
                 <td style='text-align:right'><?=$value['cnt']?></td>
               </tr>
               <?php 
