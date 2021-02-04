@@ -6,8 +6,8 @@ Ir a: <a href='/fraud'>Inicio</a>
 <?= $this->partial('layout/search-form.phtml', []); ?>
 <?php if (isset($this->data)) {?>
         <h5>Resumen</h5>
-        <div>
-            <table class="table table-striped table-sm">
+        <div class="table-responsive">
+            <table class="table table-striped table-sm" style='width:50%'>
             <thead>
                 <tr>
                   <th>Usuarios Únicos</th>
