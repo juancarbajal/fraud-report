@@ -71,7 +71,7 @@ class FraudController extends AbstractActionController
             $id = $row->cnt;
             $legend["$id"]['cnt'] = (!isset($legend["$id"]['cnt']))?1:$legend["$id"]['cnt']+1; 
             if (!isset($legend["$id"]['total']))
-                $legend["$id"]['total'] = 0;
+                $legend["$id"]['total'] = $row->total;
             else 
                 $legend["$id"]['total'] += $row->total; 
         }
