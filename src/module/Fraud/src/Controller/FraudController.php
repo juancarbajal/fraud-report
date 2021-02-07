@@ -26,7 +26,8 @@ class FraudController extends AbstractActionController
         $connectionOptions = array(
             "Database" => $config->fraud->database->dbname,
             "Uid" => $config->fraud->database->user,
-            "PWD" => $config->fraud->database->pass
+            "PWD" => $config->fraud->database->pass,
+            "CharacterSet" => "UTF-8"
         );     
         $link = sqlsrv_connect($serverName,$connectionOptions);
             return $link;
@@ -83,18 +84,20 @@ class FraudController extends AbstractActionController
         $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
-        $data = $this->_creditCard($from, $to);
+        $repeat = (int)$_REQUEST['repeat'];
+        $data = $this->_creditCard($from, $to, $repeat);
         $legend = $this->_calculateLegend($data);
         if (isset($from) && isset($to)){
             return new ViewModel(['data' => $data,
             'from' => $from,
             'to' => $to,
+            'repeat' => $repeat,
             'legend' => $legend ]);
         }
         else 
             return new ViewModel();
     }
-    private function _creditCard($from, $to){
+    private function _creditCard($from, $to, $repeat=2){
         $sql1 = "select 
             concat(cardfirstdigits, '-', lastdigits) as card
             , paymentsystemname
@@ -115,7 +118,7 @@ class FraudController extends AbstractActionController
             group by paymentsystemname
             , cardfirstdigits
             , lastdigits
-            having count(1)>1
+            having count(1)>=$repeat
             order by cnt desc;";
         return $this->executeQuery($sql1);
     }
@@ -124,20 +127,22 @@ class FraudController extends AbstractActionController
         $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
+        $repeat = (int)$_REQUEST['repeat'];
         if (isset($from) && isset($to)){
-            $data = $this->_document($from, $to);
+            $data = $this->_document($from, $to, $repeat);
             $legend = $this->_calculateLegend($data);
 
             return new ViewModel(['data' => $data,
             'from' => $from,
             'to' => $to,
+            'repeat' => $repeat,
             'legend' => $legend]);
  
         }
         else 
             return new ViewModel();
     }
-    private function  _document($from, $to){
+    private function  _document($from, $to, $repeat=2){
         $sql1 = "select 
             clientedocument
             , sum(totalvalue) as total
@@ -153,7 +158,7 @@ class FraudController extends AbstractActionController
                 and charindex('handling',status)>0
             ) as m 
             group by clientedocument
-            having count(1)>1
+            having count(1)>=$repeat
             order by cnt desc;";
         return $this->executeQuery($sql1);
     }
@@ -162,13 +167,15 @@ class FraudController extends AbstractActionController
         $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
+        $repeat = (int)$_REQUEST['repeat'];
         if (isset($from) && isset($to)){
-            $data = $this->_phone($from, $to);
+            $data = $this->_phone($from, $to, $repeat);
             $legend = $this->_calculateLegend($data);
 
             return new ViewModel(['data' => $data,
             'from' => $from,
             'to' => $to,
+            'repeat' => $repeat, 
             'legend' => $legend]);
  
         }
@@ -176,7 +183,7 @@ class FraudController extends AbstractActionController
             return new ViewModel();
     }
 
-    private function _phone($from, $to){
+    private function _phone($from, $to, $repeat=2){
         $sql1 = "select 
             phone
             , sum(totalvalue) as total
@@ -192,7 +199,7 @@ class FraudController extends AbstractActionController
                 and charindex('handling',status)>0
             ) as m 
             group by phone
-            having count(1)>1
+            having count(1)>=$repeat
             order by cnt desc;";
         return $this->executeQuery($sql1);
     }
@@ -201,12 +208,14 @@ class FraudController extends AbstractActionController
         $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
+        $repeat = (int)$_REQUEST['repeat'];
         if (isset($from) && isset($to)){
-            $data = $this->_address($from, $to);
+            $data = $this->_address($from, $to, $repeat);
             $legend = $this->_calculateLegend($data);
             return new ViewModel(['data' => $data,
             'from' => $from,
             'to' => $to,
+            'repeat' => $repeat,
             'legend' => $legend]);
  
         }
@@ -214,7 +223,7 @@ class FraudController extends AbstractActionController
             return new ViewModel();
     }
 
-    private function _address($from, $to){
+    private function _address($from, $to, $repeat=2){
         $sql1 = "select 
         street_total
         , sum(totalvalue) as total
@@ -225,14 +234,13 @@ class FraudController extends AbstractActionController
             distinct(email)
             , addresstype
             , concat(city, ', ', street, ' ', number) as street_total
-            , number
             , totalvalue
             from ordenes
             where creationdate BETWEEN '$from' and '$to'
             and charindex('handling',status)>0
         ) as m 
         group by street_total
-        having count(1)>1
+        having count(1)>=$repeat
         order by cnt desc;";
         return $this->executeQuery($sql1);
     }
@@ -371,7 +379,7 @@ class FraudController extends AbstractActionController
         'to' => $to,
         'sortDirection' => $sortDirection]);
     }
-    private function _addressDetail($form, $to, $address, $extras= '') {
+    private function _addressDetail($from, $to, $address, $extras= '') {
         $sql = "select 
         creationdate
         , orderid
@@ -409,6 +417,7 @@ class FraudController extends AbstractActionController
         $this->_validateAccess();
         $from = $_REQUEST['from'];
         $to = $_REQUEST['to'];
+        $repeat = $_REQUEST['repeat'];
         $p = $_REQUEST['p'];
         //if (isset($from) && isset($to) && isset($to)){
             $spreadsheet = new Spreadsheet();
@@ -419,25 +428,25 @@ class FraudController extends AbstractActionController
             $detailHeader = array('Fecha' , 'Id Orden', 'Correo', 'Nombre', 'Apellido', 'Monto', 'Cant. SKUs', 'Total SKUs', 'Dirección');
             switch ($p){
                 case 'credit-card': 
-                    $data = $this->_creditCard($from, $to);
+                    $data = $this->_creditCard($from, $to, $repeat);
                     $this->_calculateLegend($data);
                     $this->_dataToExcel($sheet, $data, array('#', 'Número de Tarjeta', 'Tipo de Tarjeta', 'Usuarios únicos'), array('number' => true));
                     $filename = 'credit_card_' . $from . '_' . $to . $extension;
                     break;
                 case 'document':
-                    $data = $this->_document($from, $to);
+                    $data = $this->_document($from, $to, $repeat);
                     $this->_calculateLegend($data);
                     $this->_dataToExcel($sheet, $data, array('#', 'Documento de identidad', 'Usuarios únicos'), array('number' => true));
                     $filename = 'document_' . $from . '_' . $to . $extension;
                     break;
                 case 'phone':
-                        $data = $this->_phone($from, $to);
+                        $data = $this->_phone($from, $to, $repeat);
                         $this->_calculateLegend($data);
                         $this->_dataToExcel($sheet, $data, array('#', 'Télefono' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'phone_' . $from . '_' . $to . $extension;
                     break;
                 case 'address':
-                        $data = $this->_address($from, $to);
+                        $data = $this->_address($from, $to, $repeat);
                         $this->_calculateLegend($data);
                         $this->_dataToExcel($sheet, $data, array('#', 'Dirección' , 'Usuarios únicos'), array('number' => true));
                         $filename = 'address_' . $from . '_' . $to . $extension;

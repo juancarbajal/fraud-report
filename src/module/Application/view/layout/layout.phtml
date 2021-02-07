@@ -23,11 +23,17 @@
             format: "yyyy-mm-dd",
             language: "es"
             });*/
-           $('.input-daterange input').each(function() {
+           //$(".ui-datepicker-trigger").addClass("btn btn-success")
+           $('.input-group input').each(function() {
                $(this).datepicker({
+                showOn: "button",
+                //buttonText: '<i class="fa fa-calendar"></i>',
                 format: "yyyy-mm-dd",
-                language: "es"
+                language: "es",
+                //showOnFocus: ,
+                //todayBtn:true
                 });
+               
                 //$(this).datepicker('clearDates');
             });
             /*$('.datepicker').datepicker({

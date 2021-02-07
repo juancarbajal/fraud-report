@@ -1,20 +1,45 @@
 
           <form class="needs-validation" novalidate>
             <div class='form'>
-              <div class="row g-3 input-group input-daterange">
+              <div class="row g-3">
                 <div class="col-sm-4">
                   <label for="from" class="form-label">Desde</label>
-                  <input type="text" class="input-sm form-control" id="from" name='from' value="<?=(isset($this->from))?$this->from:''?>" autocomplete="off" required>
+                  <div class="input-group date">
+                    <input type="text" class="form-control" id="from" name='from' value="<?=(isset($this->from))?$this->from:''?>" autocomplete="off" required>
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                  </div>
                   <div class="invalid-feedback">
                     Fecha valida requerida
                   </div>
                 </div>
                 <div class="col-sm-4">
-                  <label for="to" class="form-label"l>Hasta</label>
-                  <input type="text" class="input-sm form-control" id="to" name='to' value="<?=(isset($this->to))?$this->to:''?>" autocomplete="off" required>
+                  <label for="to" class="form-label">Hasta</label>
+                  <div class="input-group date">
+                    <input type="text" class="form-control" id="to" name='to' value="<?=(isset($this->to))?$this->to:''?>" autocomplete="off" required>
+                    <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                  </div>
                   <div class="invalid-feedback">
                     Fecha valida requerida
                   </div>
+                </div>
+                <div class="col-sm-4">
+                  <label for="repeat" class="form-label">Repeticiones mayor a</label>
+                  <select class="form-control" id="repeat" name="repeat">
+                    <option value="2" <?=($this->repeat == 2)?'selected':''?>>2</option>
+                    <option value="3" <?=($this->repeat == 3)?'selected':''?>>3</option>
+                    <option value="4" <?=($this->repeat == 4)?'selected':''?>>4</option>
+                    <option value="5" <?=($this->repeat == 5)?'selected':''?>>5</option>
+                    <option value="6" <?=($this->repeat == 6)?'selected':''?>>6</option>
+                    <option value="7" <?=($this->repeat == 7)?'selected':''?>>7</option>
+                    <option value="8" <?=($this->repeat == 8)?'selected':''?>>8</option>
+                    <option value="9" <?=($this->repeat == 9)?'selected':''?>>9</option>
+                    <option value="10" <?=($this->repeat == 10)?'selected':''?>>10</option>
+                  </select>
+
                 </div>
                 <div class="col-sm-4"><br>
                   <button type="submit" class="w-10 btn btn-primary btn-lg">Buscar</button>

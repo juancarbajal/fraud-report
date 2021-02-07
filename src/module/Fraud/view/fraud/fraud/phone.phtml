@@ -3,14 +3,14 @@ Ir a: <a href='/fraud'>Inicio</a>
 </div>
 <h4>Teléfono</h4>
 
-<?= $this->partial('layout/search-form.phtml', []); ?>
+<?= $this->partial('layout/search-form.phtml', ['from' => $this->from, 'to' => $this->to, 'repeat' => $this->repeat ]); ?>
 <?php if (isset($this->data)) {?>
   <?= $this->partial('layout/resumen.phtml', ['legend' => $this->legend]); ?>
 
 
   <div class="row justify-content-end">
               <div class="col col-md-auto">
-                <a href='/fraud/export-excel?p=phone&from=<?=$this->from?>&to=<?=$this->to?>'>Exportar a Excel</a>
+                <a href='/fraud/export-excel?p=phone&from=<?=$this->from?>&to=<?=$this->to?>&repeat=<?=$this->repeat?>'>Exportar a Excel</a>
               </div>
             </div>
 <div class="table-responsive">
