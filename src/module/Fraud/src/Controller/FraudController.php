@@ -260,6 +260,15 @@ class FraudController extends AbstractActionController
         }
         return $sortQuery;
     }
+    private function _detailCalculateLegend($data){
+        $total = ['total' => 0, 'cantsku' => 0, 'totalsku' => 0];
+        foreach($data as $row){
+            $total['total']+=$row->totalvalue;
+            $total['cantsku']+=$row->cantsku;
+            $total['totalsku']+=$row->totalsku;
+        }
+        return $total;
+    }
     public function creditCardDetailAction() {
         $this->_validateAccess();
         $from = $_REQUEST['from'];
@@ -274,6 +283,7 @@ class FraudController extends AbstractActionController
         'card' => $card,
         'from' => $from,
         'to' => $to,
+        'legend' => $this->_detailCalculateLegend($data),
         'sortDirection' => $sortDirection]
         );
     }
@@ -306,11 +316,13 @@ class FraudController extends AbstractActionController
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
         $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
+        $data = $this->_documentDetail($from, $to, $document, $extras);
 
-        return new ViewModel(['data' => $this->_documentDetail($from, $to, $document, $extras), 
+        return new ViewModel(['data' => $data, 
         'document' => $document,
         'from' => $from,
         'to' => $to,
+        'legend' => $this->_detailCalculateLegend($data),
         'sortDirection' => $sortDirection]);
     }
     private function _documentDetail($from, $to, $document, $extras= ''){
@@ -339,11 +351,13 @@ class FraudController extends AbstractActionController
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
         $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
-        
-        return new ViewModel(['data' => $this->_phoneDetail($from, $to, $phone, $extras), 
+        $data = $this->_phoneDetail($from, $to, $phone, $extras);
+
+        return new ViewModel(['data' => $data, 
         'phone' => $phone,
         'from' => $from,
         'to' => $to,
+        'legend' => $this->_detailCalculateLegend($data),
         'sortDirection' => $sortDirection]);
     }
     private function _phoneDetail($from, $to, $phone , $extras= ''){
@@ -372,11 +386,13 @@ class FraudController extends AbstractActionController
         $sortField = $_REQUEST['sf'];
         $sortDirection = $_REQUEST['sd'];
         $extras = $this->_sortQueryCalculate($sortField, $sortDirection);
+        $data = $this->_addressDetail($from, $to, $address, $extras);
 
-        return new ViewModel(['data' => $this->_addressDetail($from, $to, $address, $extras), 
+        return new ViewModel(['data' => $data, 
         'address' => $address,
         'from' => $from,
         'to' => $to,
+        'legend' => $this->_detailCalculateLegend($data),
         'sortDirection' => $sortDirection]);
     }
     private function _addressDetail($from, $to, $address, $extras= '') {

@@ -4,6 +4,9 @@ Ir a: <a href='/fraud'>Inicio</a> > <a href='/fraud/phone'>Teléfono</a>
 
 <h3>Teléfono <?=$this->phone?></h3>
 
+<?= $this->partial('layout/resumen-detail.phtml', ['legend' => $this->legend ]); ?>
+
+
           <div class="container form">
             <div class="row justify-content-end">
               <div class="col col-md-auto">

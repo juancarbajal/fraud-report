@@ -1,0 +1,19 @@
+        <h5>Resumen</h5>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm"  style='width:50%'>
+              <thead>
+                <tr>
+                  <th>Monto</th>
+                  <th>Cant. SKUs</th>
+                  <th>Total SKUs</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style='text-align:right'><?=number_format($this->legend['total'],2)?></td>
+                  <td style='text-align:right'><?=$this->legend['cantsku']?></td>
+                  <td style='text-align:right'><?=$this->legend['totalsku']?></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
