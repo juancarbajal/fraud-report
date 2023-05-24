@@ -1,5 +1,4 @@
- 
-# Install PHP and PDO  
+Sistema de detección de fraudes en una base de datos de compras. 
 
 # Docker 
 docker pull php
